@@ -87,6 +87,12 @@
       <span class="chip" data-t="whatson">What's on</span>
     </div>
   </div>
+  <div class="bar" style="margin-top:0">
+    <input id="search" placeholder="🔎 Search by suburb or venue…" style="flex:1;min-width:200px;background:var(--card);
+      border:1px solid var(--line);border-radius:10px;padding:.6rem .8rem;color:var(--ink);font:inherit">
+    <button id="addbtn" style="background:var(--violet);color:#fff;border:0;border-radius:10px;padding:.6rem 1rem;
+      font-weight:800;cursor:pointer;white-space:nowrap">＋ Add your night</button>
+  </div>
 
   <div class="grid" id="grid"></div>
   <div class="legend">
@@ -135,7 +141,7 @@ const DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 const iso = d => d.toISOString().slice(0,10);
 const parse = s => { const [y,m,d]=s.split("-").map(Number); return new Date(y, m-1, d); };
 
-let filter = "all";
+let filter = "all", query = "";
 const now = new Date();
 let view = new Date(now.getFullYear(), now.getMonth(), 1);
 
@@ -143,6 +149,7 @@ function eventsOn(date){
   const day = date.getDay(), ds = iso(date);
   return EVENTS.filter(e=>{
     if(filter!=="all" && e.type!==filter) return false;
+    if(query){ const hay=(e.title+" "+e.venue+" "+(e.area||"")).toLowerCase(); if(!hay.includes(query)) return false; }
     if(e.date) return e.date===ds;
     if(e.day!==undefined){
       if(e.day!==day) return false;
@@ -195,6 +202,7 @@ function renderList(){
 // ─── event detail modal + add-to-calendar (.ics, self-hosted, no Google needed) ───
 const modal=document.getElementById('modal');
 function openEvent(e,date){
+  resetSheet(); // ensure the detail markup is present (not the add-night form)
   document.getElementById('mtype').className='pill '+e.type;
   document.getElementById('mtype').textContent=TYPES[e.type];
   document.getElementById('mtitle').textContent=e.title;
@@ -239,6 +247,42 @@ document.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on')); ch.classList.add('on');
   filter=ch.dataset.t; render();
 });
+document.getElementById('search').addEventListener('input',ev=>{query=ev.target.value.trim().toLowerCase();render();});
+
+// ─── add-your-night form: submits via pre-filled email (works today, no backend) ───
+const SUBMIT_EMAIL="donn-duinn@agentmail.to";
+document.getElementById('addbtn').onclick=()=>{
+  const s=document.querySelector('#modal .sheet');
+  modal.classList.add('on');
+  s.innerHTML=`<button class="close" id="mclose2" aria-label="close">×</button>
+    <span class="pill openmic">List a night</span>
+    <h3>Add your night — free</h3>
+    <div class="mv">No account, no cost. It goes on the calendar for everyone.</div>
+    <label style="font-size:.8rem;color:var(--dim)">Night name *<input id="an" placeholder="e.g. Tuesday Open Mic"></label>
+    <label style="font-size:.8rem;color:var(--dim)">Venue *<input id="av" placeholder="e.g. The Retreat Hotel"></label>
+    <label style="font-size:.8rem;color:var(--dim)">Suburb<input id="aa" placeholder="e.g. Brunswick VIC"></label>
+    <label style="font-size:.8rem;color:var(--dim)">Day & time<input id="ad" placeholder="e.g. Every Tuesday, 7pm"></label>
+    <label style="font-size:.8rem;color:var(--dim)">Type
+      <select id="at"><option value="openmic">Open mic</option><option value="gig">Gig</option><option value="whatson">What's on</option></select></label>
+    <label style="font-size:.8rem;color:var(--dim)">Anything else<textarea id="ax" placeholder="Sign-up link, details…"></textarea></label>
+    <button class="act primary" id="asend">Send it in</button>`;
+  s.querySelectorAll('input,select,textarea').forEach(el=>el.style.cssText='width:100%;background:#0c0b16;border:1px solid var(--line);border-radius:10px;padding:.6rem;color:var(--ink);font:inherit;margin:.2rem 0 .5rem');
+  s.querySelector('#mclose2').onclick=()=>{closeModal();resetSheet();};
+  s.querySelector('#asend').onclick=()=>{
+    const g=id=>(document.getElementById(id).value||'').trim();
+    if(!g('an')||!g('av')){alert('Add at least the night name and venue.');return;}
+    const body=`Please add this night to the calendar:%0D%0A%0D%0AName: ${encodeURIComponent(g('an'))}%0D%0AVenue: ${encodeURIComponent(g('av'))}%0D%0ASuburb: ${encodeURIComponent(g('aa'))}%0D%0AWhen: ${encodeURIComponent(g('ad'))}%0D%0AType: ${encodeURIComponent(g('at'))}%0D%0ADetails: ${encodeURIComponent(g('ax'))}`;
+    window.location.href=`mailto:${SUBMIT_EMAIL}?subject=${encodeURIComponent('New night for the calendar: '+g('an'))}&body=${body}`;
+    closeModal();resetSheet();
+  };
+};
+// restore the detail-sheet markup after the add form is used
+const SHEET_HTML=document.querySelector('#modal .sheet').innerHTML;
+function resetSheet(){
+  const s=document.querySelector('#modal .sheet'); s.innerHTML=SHEET_HTML;
+  s.querySelector('#mclose').onclick=closeModal;
+}
+
 render();
 </script>
 </body>
