@@ -7,49 +7,77 @@
 <meta name="description" content="Free, open-source tools that give grassroots music venues and independent artists the infrastructure big tech charges rent for. No cut. No middleman. Try every tool live.">
 <meta property="og:title" content="Free Music Stack — AI here to pay artists, not replace them">
 <meta property="og:description" content="Free, open tools taking live music back from big tech. Try them live.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#ff5c8a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230b0a12'/%3E%3Ctext x='50' y='72' font-size='60' text-anchor='middle'%3E%F0%9F%8E%B8%3C/text%3E%3C/svg%3E">
 <style>
-  :root{--brand:#ff5c8a;--brand2:#8b5cf6;--bg:#0b0a12;--card:#15131f;--line:#272338;--ink:#f4f1fb;--dim:#a89ec6}
+  :root{--brand:#ff5c8a;--brand2:#8b5cf6;--brand3:#3ecf8e;--bg:#0a0910;--card:#14121e;--line:#282338;--ink:#f5f2fc;--dim:#a9a0c8}
   *{box-sizing:border-box}
-  body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg)}
-  .wrap{max-width:960px;margin:0 auto;padding:0 1.2rem}
-  a{color:var(--brand)}
-  .hero{text-align:center;padding:4rem 1rem 2.5rem;background:radial-gradient(700px 400px at 50% -10%,#2a1d4d,transparent)}
-  .kick{color:var(--brand);font-weight:800;letter-spacing:1.5px;text-transform:uppercase;font-size:.8rem}
-  h1{font-size:2.7rem;line-height:1.13;margin:.6rem auto;max-width:16ch;background:linear-gradient(100deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .lede{color:var(--dim);font-size:1.2rem;max-width:46ch;margin:1rem auto}
-  .ctas{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-top:1.6rem}
-  .btn{background:var(--brand);color:#0b0a12;text-decoration:none;font-weight:800;padding:.8rem 1.4rem;border-radius:12px;transition:transform .12s}
-  .btn:active{transform:scale(.97)} .btn.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
-  .stat{color:var(--dim);font-size:.85rem;margin-top:1.4rem}
-  .stat b{color:var(--ink)}
-  .thesis{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:1.8rem;margin:2rem 0;text-align:center}
+  html{scroll-behavior:smooth}
+  body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;color:var(--ink);background:var(--bg);overflow-x:hidden}
+  .wrap{max-width:980px;margin:0 auto;padding:0 1.2rem}
+  a{color:var(--brand);text-decoration:none}
+  /* nav */
+  nav{position:sticky;top:0;z-index:20;background:#0a0910d0;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  nav .in{max-width:980px;margin:0 auto;padding:.7rem 1.2rem;display:flex;align-items:center;gap:.6rem}
+  nav .logo{font-weight:800;letter-spacing:-.3px} nav .logo span{color:var(--brand)}
+  nav .gh{margin-left:auto;background:#1c1830;border:1px solid var(--line);color:var(--ink);padding:.45rem .8rem;border-radius:9px;font-weight:700;font-size:.85rem}
+  nav .gh:hover{border-color:var(--brand)}
+  /* hero */
+  .hero{position:relative;text-align:center;padding:4.5rem 1rem 3rem;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:-30% -10% auto;height:600px;z-index:-1;
+    background:radial-gradient(600px 300px at 50% 0,#3a2560,transparent 70%),radial-gradient(400px 240px at 20% 20%,#5c1f4a55,transparent),radial-gradient(400px 240px at 80% 10%,#2a1f6a55,transparent)}
+  .kick{display:inline-block;color:var(--brand);font-weight:800;letter-spacing:1.6px;text-transform:uppercase;font-size:.75rem;border:1px solid #ffffff1a;border-radius:99px;padding:.4rem 1rem;background:#ffffff08}
+  h1{font-size:clamp(2.2rem,7vw,3.4rem);line-height:1.1;margin:1rem auto;max-width:15ch;font-weight:850;letter-spacing:-1px;
+     background:linear-gradient(100deg,var(--brand),var(--brand2) 55%,#c9a3ff);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 8s linear infinite}
+  @keyframes shine{to{background-position:200% center}}
+  .lede{color:var(--dim);font-size:clamp(1.05rem,3vw,1.25rem);max-width:48ch;margin:1.1rem auto}
+  .ctas{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin-top:1.8rem}
+  .btn{background:linear-gradient(100deg,var(--brand),#ff7aa2);color:#0a0910;font-weight:800;padding:.85rem 1.5rem;border-radius:12px;transition:transform .15s,box-shadow .15s;box-shadow:0 8px 30px #ff5c8a33}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px #ff5c8a55}
+  .btn.alt{background:#141220;color:var(--ink);border:1px solid var(--line);box-shadow:none}
+  .proof{display:flex;gap:.5rem 1.4rem;justify-content:center;flex-wrap:wrap;margin-top:1.8rem;color:var(--dim);font-size:.83rem}
+  .proof b{color:var(--ink)} .proof .dot{color:var(--brand3)}
+  /* reveal */
+  .rev{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+  .rev.in{opacity:1;transform:none}
+  .thesis{background:linear-gradient(160deg,#191426,#120f1c);border:1px solid var(--line);border-radius:22px;padding:2rem;margin:2.5rem 0;text-align:center;font-size:1.05rem}
   .thesis b{color:var(--brand)}
-  h2{font-size:1.8rem;text-align:center;margin:3rem 0 .3rem}
-  .sub{color:var(--dim);text-align:center;margin-bottom:1.4rem}
-  .previews{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  h2{font-size:clamp(1.5rem,5vw,2rem);text-align:center;margin:3.5rem 0 .3rem;font-weight:800;letter-spacing:-.5px}
+  .sub{color:var(--dim);text-align:center;margin-bottom:1.5rem}
+  .previews{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem}
   @media(max-width:640px){.previews{grid-template-columns:1fr}}
-  .frame{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
-  .frame .cap{display:flex;align-items:center;gap:.5rem;padding:.6rem .9rem;border-bottom:1px solid var(--line);font-weight:700;font-size:.9rem}
+  .frame{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:transform .2s,border-color .2s}
+  .frame:hover{transform:translateY(-3px);border-color:#ffffff2a}
+  .frame .cap{display:flex;align-items:center;gap:.5rem;padding:.65rem .95rem;border-bottom:1px solid var(--line);font-weight:700;font-size:.9rem}
   .frame .cap a{margin-left:auto;font-size:.8rem}
   .frame iframe{width:100%;height:360px;border:0;background:#0d0c14;display:block}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1rem}
-  .tool{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.2rem;display:flex;flex-direction:column}
-  .tool .ic{font-size:1.6rem} .tool h3{margin:.5rem 0 .3rem;font-size:1.05rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:1rem}
+  .tool{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.3rem;display:flex;flex-direction:column;transition:transform .18s,border-color .18s,box-shadow .18s}
+  .tool:hover{transform:translateY(-4px);border-color:var(--brand);box-shadow:0 14px 40px #0007}
+  .tool .ic{font-size:1.7rem} .tool h3{margin:.55rem 0 .3rem;font-size:1.06rem}
   .tool p{color:var(--dim);font-size:.9rem;margin:.3rem 0;flex:1}
-  .tool .vs{color:var(--brand);font-size:.78rem;font-weight:700;margin:.5rem 0}
-  .tool .try{margin-top:.4rem;background:#1f1a30;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:700;font-size:.85rem;text-align:center;padding:.5rem;border-radius:10px}
-  .tool .try:hover{border-color:var(--brand)}
-  .paths{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
+  .tool .vs{color:var(--brand);font-size:.77rem;font-weight:700;margin:.6rem 0}
+  .tool .try{margin-top:.4rem;background:#1c1830;border:1px solid var(--line);color:var(--ink);font-weight:700;font-size:.85rem;text-align:center;padding:.55rem;border-radius:10px;transition:.15s}
+  .tool:hover .try{background:var(--brand);color:#0a0910;border-color:var(--brand)}
+  .paths{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:1rem}
   @media(max-width:560px){.paths{grid-template-columns:1fr}}
-  .path{background:linear-gradient(160deg,#1c1730,#15131f);border:1px solid var(--line);border-radius:18px;padding:1.4rem}
-  .path ul{color:var(--dim);padding-left:1.1rem;margin:.6rem 0}
-  footer{border-top:1px solid var(--line);margin-top:3rem;padding:2rem 1rem;text-align:center;color:var(--dim);font-size:.85rem}
+  .path{background:linear-gradient(160deg,#1c1730,#14121e);border:1px solid var(--line);border-radius:18px;padding:1.5rem}
+  .path h3{margin:.1rem 0} .path ul{color:var(--dim);padding-left:1.1rem;margin:.7rem 0}
+  .closing{text-align:center;background:linear-gradient(160deg,#221541,#140f22);border:1px solid var(--line);border-radius:22px;padding:2.4rem 1.5rem;margin:3.5rem 0}
+  .closing h2{margin-top:0}
+  footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;color:var(--dim);font-size:.85rem}
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <div class="kick">Free · Open Source · Local-First · Live now</div>
+<nav><div class="in">
+  <span class="logo">🎸 Free Music <span>Stack</span></span>
+  <a class="gh" href="https://github.com/donn-duinn/free-music-stack">★ Star on GitHub</a>
+</div></nav>
+
+<header class="hero">
+  <span class="kick">Free · Open Source · Local-First · Live now</span>
   <h1>AI here to pay artists. Not replace them.</h1>
   <p class="lede">Free, open tools that give grassroots music venues and independent artists the
   infrastructure big tech charges rent for. No cut. No middleman. No data grab.</p>
@@ -57,33 +85,38 @@
     <a class="btn" href="#tools">Try the tools live ↓</a>
     <a class="btn alt" href="https://github.com/donn-duinn/free-music-stack">Get it on GitHub</a>
   </div>
-  <div class="stat"><b>10 tools</b> · built in a day · MIT-licensed · yours to run</div>
-</div>
+  <div class="proof">
+    <span><span class="dot">●</span> Live at <b>openmic</b></span>
+    <span><span class="dot">●</span> Councils engaging</span>
+    <span><span class="dot">●</span> WA Music spreading it</span>
+    <span><span class="dot">●</span> <b>10 tools</b>, MIT, built in a day</span>
+  </div>
+</header>
 
 <div class="wrap">
-  <div class="thesis">
+  <div class="thesis rev">
     Artists are told to fear AI — trained on their work, flooding the platforms, taking the jobs.
     Big tech points AI at artists to <b>extract</b> from them.<br>
     <b>We point AI at big tech to give it back.</b> Every tool here was built by AI, fast, by one
     self-taught musician — and every one routes <b>100% of the money to the artist or venue</b>, and takes nothing.
   </div>
 
-  <h2>See it working</h2>
-  <div class="sub">Real, live product — not mockups.</div>
-  <div class="previews">
+  <h2 class="rev">See it working</h2>
+  <div class="sub rev">Real, live product — not mockups.</div>
+  <div class="previews rev">
     <div class="frame"><div class="cap">🌐 Venue site <a href="venue-site/">open →</a></div><iframe src="venue-site/" loading="lazy" title="venue site"></iframe></div>
     <div class="frame"><div class="cap">💜 Artist hub <a href="artist-hub/">open →</a></div><iframe src="artist-hub/" loading="lazy" title="artist hub"></iframe></div>
     <div class="frame"><div class="cap">📅 What's On <a href="whats-on/">open →</a></div><iframe src="whats-on/" loading="lazy" title="whats on"></iframe></div>
     <div class="frame"><div class="cap">🎵 Music player <a href="music-player/">open →</a></div><iframe src="music-player/" loading="lazy" title="music player"></iframe></div>
   </div>
 
-  <h2 id="tools">The tools — try each one live</h2>
-  <div class="sub">Everything a venue and an artist need. Free forever. Click to try.</div>
-  <div class="grid" id="toolgrid"></div>
+  <h2 id="tools" class="rev">The tools — try each one live</h2>
+  <div class="sub rev">Everything a venue and an artist need. Free forever. Click to try.</div>
+  <div class="grid rev" id="toolgrid"></div>
 
-  <h2>Start free in minutes</h2>
-  <div class="sub">Pick your path.</div>
-  <div class="paths">
+  <h2 class="rev">Start free in minutes</h2>
+  <div class="sub rev">Pick your path.</div>
+  <div class="paths rev">
     <div class="path">
       <h3>🍺 I run a venue</h3>
       <ul><li>Free site with your menus + gig nights</li><li>Sell tickets fee-free, run a loyalty card</li>
@@ -95,6 +128,15 @@
       <ul><li>Sign up to play open mics, no inbox scramble</li><li>Your hub: music, tips, merch, mailing list</li>
         <li>Sell music + merch direct — keep 100%</li><li>Own your audience, not the algorithm</li></ul>
       <a class="btn" href="https://github.com/donn-duinn/free-music-stack#the-tools">Build your hub →</a>
+    </div>
+  </div>
+
+  <div class="closing rev">
+    <h2>Take live music back.</h2>
+    <p class="sub" style="max-width:40ch;margin:.5rem auto 1.2rem">It's free, it's open, it's yours. Run it in your town, improve it, spread it.</p>
+    <div class="ctas">
+      <a class="btn" href="https://github.com/donn-duinn/free-music-stack">★ Star & fork on GitHub</a>
+      <a class="btn alt" href="https://openmic.techduinn.dpdns.org">See openmic live</a>
     </div>
   </div>
 </div>
@@ -120,6 +162,9 @@ const TOOLS = [
 document.getElementById('toolgrid').innerHTML = TOOLS.map(t=>
   `<div class="tool"><div class="ic">${t[0]}</div><h3>${t[1]}</h3><p>${t[2]}</p><div class="vs">${t[3]}</div>
    <a class="try" href="${t[4]}" ${t[4].startsWith('http')?'target="_blank" rel="noopener"':''}>Try it live →</a></div>`).join('');
+// scroll reveal
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('.rev').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
