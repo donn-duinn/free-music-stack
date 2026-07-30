@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crew First — the app (open-source, fair)</title>
+<meta name="description" content="Open-source crew app — see shifts, accept jobs, clock on/off, and see exactly what you're paid with nothing skimmed. Free, fair, people first.">
+<meta name="theme-color" content="#ff8a3d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230b0a12'/%3E%3Ctext x='50' y='72' font-size='52' text-anchor='middle'%3E%F0%9F%A6%BA%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--amber:#ff8a3d;--bg:#0a0910;--card:#161320;--card2:#1c1830;--line:#2a2540;--ink:#f3f1fb;--dim:#9c94bd;--good:#3ecf8e;--red:#ff6b7d}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;color:var(--ink);
+       background:var(--bg);max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:5rem}
+  header{padding:1.1rem 1.1rem .3rem;text-align:center}
+  .logo{font-weight:850;font-size:1.3rem} .logo b{color:var(--amber)}
+  .proto{background:#2a1c0c;border:1px solid #4a3410;color:var(--amber);font-size:.72rem;text-align:center;padding:.35rem;border-radius:8px;margin:.5rem 1.1rem;font-weight:700}
+  .screen{padding:.4rem 1.1rem}
+  h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin:1rem 0 .5rem}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:.9rem 1rem;margin:.55rem 0}
+  .card .top{display:flex;justify-content:space-between;gap:.6rem;align-items:flex-start}
+  .card .role{font-weight:800;font-size:1.05rem} .card .venue{color:var(--dim);font-size:.88rem}
+  .card .when{color:var(--ink);font-size:.9rem;margin:.35rem 0}
+  .pay{background:#0f1d18;border:1px solid #1f3d31;border-radius:10px;padding:.5rem .7rem;margin:.5rem 0;font-size:.86rem}
+  .pay .rate{color:var(--good);font-weight:800;font-size:1.05rem}
+  .pay .keep{color:var(--good)} .pay .skim{color:var(--red);text-decoration:line-through;opacity:.7}
+  .pay small{color:var(--dim)}
+  button{border:0;border-radius:10px;padding:.6rem 1rem;font-weight:800;font-size:.92rem;cursor:pointer;font-family:inherit}
+  .accept{background:var(--amber);color:#0a0910;width:100%;margin-top:.3rem}
+  .clockon{background:var(--good);color:#0a0910} .clockoff{background:var(--red);color:#fff}
+  .ghost{background:var(--card2);border:1px solid var(--line);color:var(--ink)}
+  .row{display:flex;gap:.5rem;align-items:center;margin-top:.4rem}
+  .badge{font-size:.66rem;font-weight:800;padding:.15rem .5rem;border-radius:99px;background:#241a45;color:var(--amber)}
+  .badge.on{background:#0f2e20;color:var(--good)} .badge.done{background:#22203a;color:var(--dim)}
+  .empty{color:var(--dim);text-align:center;padding:2rem 1rem;font-size:.92rem}
+  .paysum{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;padding:1.1rem}
+  .paysum .big{font-size:2rem;font-weight:850;color:var(--good)}
+  .paysum .cmp{color:var(--dim);font-size:.88rem;margin-top:.5rem}
+  .paysum .cmp b{color:var(--red)}
+  .tickets{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+  .tk{font-size:.75rem;background:var(--card2);border:1px solid var(--line);border-radius:99px;padding:.25rem .6rem}
+  nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;display:flex;
+      background:#0d0b16;border-top:1px solid var(--line);z-index:10}
+  nav button{flex:1;background:none;color:var(--dim);border:0;padding:.7rem 0 .8rem;font-size:.72rem;border-radius:0}
+  nav button .i{font-size:1.2rem;display:block}
+  nav button.on{color:var(--amber)}
+  footer{text-align:center;color:var(--dim);font-size:.76rem;padding:1rem}
+  footer a{color:var(--amber)}
+</style>
+</head>
+<body>
+<header><div class="logo">🦺 Crew <b>First</b></div></header>
+<div class="proto">⚡ Working prototype · open source · your data stays on your phone</div>
+
+<div class="screen" id="screen"></div>
+
+<nav id="nav">
+  <button data-t="shifts" class="on"><span class="i">📋</span>Shifts</button>
+  <button data-t="mine"><span class="i">🗓️</span>Mine</button>
+  <button data-t="pay"><span class="i">💰</span>Pay</button>
+  <button data-t="me"><span class="i">🪪</span>Me</button>
+</nav>
+<footer>Free &amp; open source — <a href="../">about Crew First</a> · <a href="https://github.com/donn-duinn/free-music-stack">the code</a></footer>
+
+<script>
+// ── demo data (a real deploy would pull live shifts; this shows the fair model working) ──
+const SHIFTS = [
+  {id:1, role:"Stagehand", venue:"Riverside Arena", when:"Fri 8 Aug · 4pm–1am", hrs:9, rate:48},
+  {id:2, role:"Rigger", venue:"Festival load-in, Showgrounds", when:"Sat 9 Aug · 6am–2pm", hrs:8, rate:62},
+  {id:3, role:"AV Tech", venue:"Convention Centre", when:"Mon 11 Aug · 7am–3pm", hrs:8, rate:55},
+  {id:4, role:"Lighting", venue:"Theatre Royal", when:"Wed 13 Aug · 5pm–11pm", hrs:6, rate:52},
+];
+const AGENCY_SKIM = 0.28; // ~ what labour-hire keeps off the top. Here: 0.
+const KEY = "crewfirst_v1";
+let state = JSON.parse(localStorage.getItem(KEY) || '{"accepted":[],"clock":{}}');
+const save = ()=>localStorage.setItem(KEY, JSON.stringify(state));
+const money = n => "$"+n.toFixed(2);
+let tab = "shifts";
+
+const el = id => document.getElementById(id);
+function shiftById(id){ return SHIFTS.find(s=>s.id===id); }
+
+function render(){
+  const s = el('screen');
+  if(tab==="shifts"){
+    const avail = SHIFTS.filter(x=>!state.accepted.includes(x.id));
+    s.innerHTML = `<h2>Available shifts near you</h2>` + (avail.length? avail.map(x=>`
+      <div class="card">
+        <div class="top"><div><div class="role">${x.role}</div><div class="venue">${x.venue}</div></div></div>
+        <div class="when">🕑 ${x.when} · ${x.hrs}h</div>
+        <div class="pay"><span class="rate">${money(x.rate)}/hr</span> · you take <span class="keep">${money(x.rate*x.hrs)}</span>
+          <br><small>an agency would've skimmed <span class="skim">${money(x.rate*x.hrs*AGENCY_SKIM)}</span> off this. Here: nothing.</small></div>
+        <button class="accept" onclick="accept(${x.id})">Accept this shift</button>
+      </div>`).join("") : `<div class="empty">You've taken all the open shifts. 💪</div>`);
+  }
+  else if(tab==="mine"){
+    const mine = state.accepted.map(shiftById);
+    s.innerHTML = `<h2>My shifts</h2>` + (mine.length? mine.map(x=>{
+      const c = state.clock[x.id]||{};
+      const on = c.on && !c.off;
+      const done = c.on && c.off;
+      return `<div class="card">
+        <div class="top"><div><div class="role">${x.role}</div><div class="venue">${x.venue}</div></div>
+          <span class="badge ${on?'on':done?'done':''}">${on?'ON SHIFT':done?'DONE':'BOOKED'}</span></div>
+        <div class="when">🕑 ${x.when} · ${x.hrs}h · you take <span style="color:var(--good)">${money(x.rate*x.hrs)}</span></div>
+        <div class="row">
+          ${!c.on?`<button class="clockon" onclick="clockOn(${x.id})">Clock on</button>`:''}
+          ${on?`<button class="clockoff" onclick="clockOff(${x.id})">Clock off</button>`:''}
+          ${done?`<span style="color:var(--dim);font-size:.85rem">✔ Clocked ${c.on} → ${c.off}</span>`:''}
+          <button class="ghost" onclick="drop(${x.id})">Drop</button>
+        </div>
+      </div>`;
+    }).join("") : `<div class="empty">No shifts yet. Grab one from the Shifts tab.</div>`);
+  }
+  else if(tab==="pay"){
+    const mine = state.accepted.map(shiftById);
+    const gross = mine.reduce((a,x)=>a+x.rate*x.hrs,0);
+    const skimmed = gross*AGENCY_SKIM;
+    s.innerHTML = `<h2>Your pay — nothing hidden</h2>
+      <div class="paysum">
+        <div>This period, ${mine.length} shift${mine.length!==1?'s':''}:</div>
+        <div class="big">${money(gross)}</div>
+        <div style="color:var(--dim);font-size:.85rem">Full rate. You keep 100%. Super, tax and workers comp handled properly on top — never skimmed out of your pay.</div>
+        <div class="cmp">Through the old labour-hire model, roughly <b>${money(skimmed)}</b> of this would've been kept by the agency. That's your money. Here it stays yours.</div>
+      </div>
+      <h2>Every shift</h2>
+      ${mine.length? mine.map(x=>`<div class="card"><div class="top"><div class="role">${x.role}</div>
+        <div style="color:var(--good);font-weight:800">${money(x.rate*x.hrs)}</div></div>
+        <div class="venue">${x.venue} · ${x.hrs}h @ ${money(x.rate)}/hr</div></div>`).join("")
+        : `<div class="empty">Accept a shift to see your pay build up.</div>`}`;
+  }
+  else if(tab==="me"){
+    s.innerHTML = `<h2>Your profile</h2>
+      <div class="card">
+        <div class="role">Your name here</div>
+        <div class="venue">Melbourne · available for gigs</div>
+        <h2 style="margin-top:.8rem">Tickets &amp; quals</h2>
+        <div class="tickets">
+          <span class="tk">✅ White Card</span><span class="tk">✅ RSA</span>
+          <span class="tk">✅ EWP</span><span class="tk">✅ Working at Heights</span><span class="tk">➕ Add</span>
+        </div>
+      </div>
+      <div class="card" style="border-color:#1f3d31">
+        <div class="role" style="color:var(--good)">💚 Hurt on a job?</div>
+        <div class="venue">You have return-to-work and compensation rights, and support if you're doing it tough. You're never dropped here.</div>
+        <div class="row"><a href="../../help/" style="color:var(--amber);font-weight:700;text-decoration:none;font-size:.9rem">Support &amp; your rights →</a></div>
+      </div>`;
+  }
+}
+function accept(id){ if(!state.accepted.includes(id)) state.accepted.push(id); save(); tab="mine"; setTab(); }
+function drop(id){ state.accepted = state.accepted.filter(x=>x!==id); delete state.clock[id]; save(); render(); }
+function clockOn(id){ const t=new Date(); state.clock[id]={on:t.getHours()+":"+String(t.getMinutes()).padStart(2,'0')}; save(); render(); }
+function clockOff(id){ const t=new Date(); state.clock[id].off=t.getHours()+":"+String(t.getMinutes()).padStart(2,'0'); save(); render(); }
+function setTab(){ document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on', b.dataset.t===tab)); render(); }
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{ tab=b.dataset.t; setTab(); });
+render();
+</script>
+</body>
+</html>
