@@ -51,6 +51,20 @@
   .add{background:var(--card2);border:1px dashed var(--line);border-radius:12px;padding:1rem;color:var(--dim);font-size:.88rem;margin-top:1.4rem}
   .add code{background:#000;color:var(--whatson);padding:.1rem .3rem;border-radius:5px}
   footer{text-align:center;color:var(--dim);font-size:.8rem;margin-top:2rem} footer a{color:var(--violet)}
+  .ev,.list .row{cursor:pointer}
+  #modal{position:fixed;inset:0;background:#000a;display:none;place-items:center;z-index:20;padding:1rem}
+  #modal.on{display:grid}
+  .sheet{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:18px;
+         max-width:400px;width:100%;padding:1.4rem;box-shadow:0 20px 60px #000b}
+  .sheet .pill{margin-bottom:.5rem;display:inline-block}
+  .sheet h3{margin:.2rem 0 .1rem;font-size:1.35rem}
+  .sheet .mv{color:var(--dim);margin:.15rem 0 .8rem}
+  .sheet .mn{margin:.6rem 0 1rem}
+  .sheet a.act,.sheet button.act{display:block;width:100%;text-align:center;text-decoration:none;border:0;cursor:pointer;
+    border-radius:12px;padding:.75rem;font-weight:800;font-size:.98rem;margin-top:.5rem;font-family:inherit}
+  .sheet .act.primary{background:var(--violet);color:#fff}
+  .sheet .act.ghost{background:var(--card);border:1px solid var(--line);color:var(--ink)}
+  .sheet .close{background:none;border:0;color:var(--dim);float:right;font-size:1.3rem;cursor:pointer;margin:-.4rem -.4rem 0 0}
 </style>
 </head>
 <body>
@@ -94,13 +108,25 @@
     <a href="https://donn-duinn.github.io/free-music-stack/why/">why we built this</a></footer>
 </div>
 
+<div id="modal"><div class="sheet">
+  <button class="close" id="mclose" aria-label="close">×</button>
+  <span class="pill" id="mtype"></span>
+  <h3 id="mtitle"></h3>
+  <div class="mv" id="mvenue"></div>
+  <div class="mn" id="mnote"></div>
+  <button class="act primary" id="mics">📅 Add to my calendar</button>
+  <a class="act ghost" id="msignup" target="_blank" rel="noopener">Sign up / more info</a>
+  <a class="act ghost" id="mmap" target="_blank" rel="noopener">📍 Find the venue</a>
+</div></div>
+
 <script>
 // ─── EVENTS — real nights only. Weekly (day 0-6) or one-off (date). ───
 const EVENTS = [
-  {title:"Preston Community Open Mic", venue:"Venue TBC — Preston", type:"openmic", day:2, from:"2026-09-08",
-   time:"7:00pm", note:"Free to play, free to watch. Tips split evenly, everyone sees their share."},
-  {title:"The Drunken Poet Open Mic", venue:"The Drunken Poet, West Melbourne", type:"openmic", day:4,
-   time:"from 8:00pm", note:"Weekly Thursdays."},
+  {title:"Preston Community Open Mic", venue:"Venue TBC — Preston", area:"Preston VIC", type:"openmic", day:2,
+   from:"2026-09-08", time:"7:00pm", url:"https://openmic.techduinn.dpdns.org",
+   note:"Free to play, free to watch. Tips split evenly, everyone sees their share."},
+  {title:"The Drunken Poet Open Mic", venue:"The Drunken Poet", area:"West Melbourne VIC", type:"openmic", day:4,
+   time:"from 8:00pm", note:"Weekly Thursdays. Extra open mic on any 5th Thursday of the month."},
 ];
 
 const TYPES = {openmic:"Open mic", gig:"Gig", whatson:"What's on"};
@@ -142,6 +168,7 @@ function renderGrid(){
     eventsOn(date).forEach(e=>{
       const s=document.createElement('span'); s.className='ev '+e.type;
       s.textContent=e.title; s.title=e.title+" — "+e.venue+(e.time?" · "+e.time:"");
+      s.onclick=()=>openEvent(e,date);
       c.appendChild(s);
     });
     g.appendChild(c);
@@ -154,13 +181,54 @@ function renderList(){
     const date=new Date(start); date.setDate(start.getDate()+i);
     eventsOn(date).forEach(e=>out.push({date,e}));
   }
-  document.getElementById('list').innerHTML = out.length ? out.map(({date,e})=>`
-    <div class="row">
-      <div class="date"><b>${date.getDate()}</b><span>${MONTHS[date.getMonth()].slice(0,3)}</span></div>
+  const L=document.getElementById('list');
+  L.innerHTML = out.length ? out.map(({date,e},i)=>`
+    <div class="row" data-idx="${i}">
+      <div class="date"><b>${date.getDate()}</b><span>${DOW[date.getDay()]}</span></div>
       <div style="flex:1"><div class="t">${e.title} <span class="pill ${e.type}">${TYPES[e.type]}</span></div>
-        <div class="v">${e.venue}${e.time?" · "+e.time:""}</div>
+        <div class="v">${e.venue}${e.area?", "+e.area:""}${e.time?" · "+e.time:""}</div>
         ${e.note?`<div class="n">${e.note}</div>`:""}</div>
-    </div>`).join("") : `<div class="row" style="color:var(--dim)">Nothing listed yet for the next few weeks. Add your night above.</div>`;
+    </div>`).join("") : `<div class="row" style="color:var(--dim);cursor:default">Nothing listed yet for the next few weeks. Add your night above.</div>`;
+  L.querySelectorAll('.row[data-idx]').forEach(r=>r.onclick=()=>{const o=out[+r.dataset.idx];openEvent(o.e,o.date);});
+}
+
+// ─── event detail modal + add-to-calendar (.ics, self-hosted, no Google needed) ───
+const modal=document.getElementById('modal');
+function openEvent(e,date){
+  document.getElementById('mtype').className='pill '+e.type;
+  document.getElementById('mtype').textContent=TYPES[e.type];
+  document.getElementById('mtitle').textContent=e.title;
+  document.getElementById('mvenue').textContent=[e.venue,e.area].filter(Boolean).join(", ")+(e.time?" · "+e.time:"");
+  document.getElementById('mnote').textContent=e.note||"";
+  const su=document.getElementById('msignup');
+  if(e.url){su.style.display='block';su.href=e.url;} else su.style.display='none';
+  const mp=document.getElementById('mmap');
+  const q=[e.venue,e.area].filter(Boolean).join(" ");
+  if(q){mp.style.display='block';mp.href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q);} else mp.style.display='none';
+  document.getElementById('mics').onclick=()=>downloadICS(e,date);
+  modal.classList.add('on');
+}
+function closeModal(){modal.classList.remove('on');}
+document.getElementById('mclose').onclick=closeModal;
+modal.onclick=ev=>{if(ev.target===modal)closeModal();};
+
+function pad(n){return String(n).padStart(2,'0');}
+function icsDate(d){return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate());}
+function downloadICS(e,date){
+  // all-day-ish VEVENT on the date; weekly events carry an RRULE so the phone repeats them
+  const dt=icsDate(date), next=new Date(date); next.setDate(date.getDate()+1);
+  let ev="BEGIN:VEVENT\nUID:"+dt+"-"+e.title.replace(/\W/g,'')+"@techduinn\n"+
+    "DTSTART;VALUE=DATE:"+dt+"\nDTEND;VALUE=DATE:"+icsDate(next)+"\n"+
+    "SUMMARY:"+e.title+(e.time?" ("+e.time+")":"")+"\n"+
+    "LOCATION:"+[e.venue,e.area].filter(Boolean).join(", ")+"\n"+
+    "DESCRIPTION:"+((e.note||"")+(e.url?" "+e.url:"")).replace(/\n/g,' ')+"\n";
+  if(e.day!==undefined) ev+="RRULE:FREQ=WEEKLY;BYDAY="+["SU","MO","TU","WE","TH","FR","SA"][e.day]+"\n";
+  ev+="END:VEVENT\n";
+  const ics="BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Tech Duinn//Free Music Stack//EN\nCALSCALE:GREGORIAN\n"+ev+"END:VCALENDAR";
+  const blob=new Blob([ics],{type:'text/calendar'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=e.title.replace(/\W+/g,'-').toLowerCase()+'.ics'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
 }
 
 function render(){ renderGrid(); renderList(); }
