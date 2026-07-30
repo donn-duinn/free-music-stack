@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loyalty card</title>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     FREE DIGITAL LOYALTY CARD for small venues — the "Pub Plus" the big chains
+     have, given to independents. Runs on the customer's own phone (localStorage).
+     NO customer data collected, NO server, NO monthly fee, NO data sold.
+     Anti-abuse: a stamp only adds when STAFF enter the venue PIN (customer can't
+     self-stamp remotely). Edit CONFIG, deploy free, QR it at the bar.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style>
+  :root{--brand:#3ecf8e;--bg:#0c1512;--card:#14201b;--line:#25352c;--ink:#eafff4;--dim:#8fb3a2}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:radial-gradient(800px 400px at 50% -10%,#16241d,var(--bg));color:var(--ink);min-height:100vh}
+  .wrap{max-width:460px;margin:0 auto;padding:1.3rem}
+  header{text-align:center;padding:1rem 0}
+  h1{font-size:1.5rem;margin:.2rem 0} .tag{color:var(--dim)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:1.4rem;margin-top:1rem;box-shadow:0 10px 40px #0006}
+  .reward{text-align:center;font-weight:700;color:var(--brand);margin-bottom:1rem}
+  .stamps{display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem;margin:1rem 0}
+  .stamp{aspect-ratio:1;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;font-size:1.5rem;color:var(--dim);transition:.25s}
+  .stamp.on{background:var(--brand);border-style:solid;border-color:var(--brand);color:#0c1512;transform:scale(1.05)}
+  .count{text-align:center;color:var(--dim);font-size:.9rem}
+  button{width:100%;margin-top:1rem;background:var(--brand);color:#0c1512;border:0;border-radius:12px;padding:.9rem;font-size:1rem;font-weight:800;cursor:pointer}
+  button.ghost{background:none;border:1px solid var(--line);color:var(--dim);font-weight:600}
+  .done{text-align:center;padding:1rem;border:2px solid var(--brand);border-radius:14px;margin-top:1rem;color:var(--brand);font-weight:800;display:none}
+  dialog{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:16px;padding:1.2rem;max-width:300px}
+  dialog input{width:100%;padding:.7rem;font-size:1.2rem;text-align:center;letter-spacing:.3rem;border-radius:10px;border:1px solid var(--line);background:#0c1512;color:var(--ink);margin:.6rem 0}
+  .err{color:#ff6b8b;font-size:.85rem;text-align:center;min-height:1.1em}
+  footer{text-align:center;color:var(--dim);font-size:.76rem;padding:1.4rem 0}
+  footer a{color:var(--brand)}
+  .note{color:var(--dim);font-size:.8rem;text-align:center;margin-top:.6rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+<script>
+// ═══ CONFIG — per venue ═══
+const L = {
+  venue: "The Demo Hotel",
+  reward: "Buy 9, get your 10th on the house 🍺",
+  needed: 10,          // stamps to earn the reward
+  staffPin: "4821",    // STAFF ONLY — enter to add a stamp. Change per venue.
+  accent: "#3ecf8e",
+};
+// ═══ end config ═══
+</script>
+
+<header>
+  <h1 id="vname"></h1>
+  <div class="tag">Loyalty card</div>
+</header>
+
+<div class="card">
+  <div class="reward" id="reward"></div>
+  <div class="stamps" id="stamps"></div>
+  <div class="count" id="count"></div>
+  <div class="done" id="done">🎉 Reward unlocked! Show this to staff.</div>
+  <button id="add">+ Add a stamp</button>
+  <button class="ghost" id="redeem" style="display:none">Redeem reward</button>
+  <div class="note">Stamps live on your phone. We keep none of your data.</div>
+</div>
+
+<footer>Free loyalty for independent venues, by <a href="https://openmic.techduinn.dpdns.org">openmic / Tech Duinn</a>. No fees, no data harvesting.</footer>
+
+<dialog id="pinDlg">
+  <div style="text-align:center;font-weight:700">Staff: enter today's PIN</div>
+  <input id="pin" inputmode="numeric" maxlength="6" placeholder="••••">
+  <div class="err" id="err"></div>
+  <button id="pinOk">Add stamp</button>
+  <button class="ghost" id="pinCancel">Cancel</button>
+</dialog>
+
+<script>
+const KEY = 'loyalty-' + L.venue.replace(/\W/g,'');
+document.documentElement.style.setProperty('--brand', L.accent);
+vname.textContent = L.venue; reward.textContent = L.reward;
+document.title = L.venue + " — loyalty";
+let n = parseInt(localStorage.getItem(KEY) || '0', 10);
+
+function render(){
+  stamps.innerHTML = '';
+  for(let i=0;i<L.needed;i++){
+    const s=document.createElement('div'); s.className='stamp'+(i<n?' on':'');
+    s.textContent = i<n ? '★' : (i+1); stamps.appendChild(s);
+  }
+  count.textContent = n>=L.needed ? 'Card full!' : `${n} / ${L.needed} — ${L.needed-n} to go`;
+  done.style.display = n>=L.needed ? 'block' : 'none';
+  add.style.display = n>=L.needed ? 'none' : 'block';
+  redeem.style.display = n>=L.needed ? 'block' : 'none';
+}
+add.onclick = ()=>{ err.textContent=''; pin.value=''; pinDlg.showModal(); setTimeout(()=>pin.focus(),50); };
+pinCancel.onclick = ()=> pinDlg.close();
+pinOk.onclick = ()=>{
+  if(pin.value === L.staffPin){ n++; localStorage.setItem(KEY,n); pinDlg.close(); render(); }
+  else { err.textContent = 'Wrong PIN'; }
+};
+redeem.onclick = ()=>{ if(confirm('Redeem reward? This resets your card.')){ n=0; localStorage.setItem(KEY,n); render(); } };
+render();
+</script>
+</div>
+</body>
+</html>

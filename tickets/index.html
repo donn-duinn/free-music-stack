@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event tickets — no booking fees</title>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     FREE EVENT / TICKET PAGE — the anti-Ticketek. Buy goes DIRECT to the
+     venue/artist's own Stripe. No booking fee, no middleman. Open licence.
+     v1 (this): event page + Stripe-direct buy + on-screen ticket QR after purchase.
+     v2: Worker+D1 backend issues signed QR tickets + a door-scanner page.
+     Edit CONFIG, deploy free. Powered by openmic.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style>
+  :root{--brand:#ffd25a;--bg:#0d0c14;--card:#17162099;--line:#2b2940;--ink:#f4f1ff;--dim:#a59ec6}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);
+       background:radial-gradient(900px 500px at 50% -10%,#241f3d,var(--bg));min-height:100vh}
+  .wrap{max-width:560px;margin:0 auto;padding:1.3rem}
+  .poster{background:linear-gradient(160deg,#2a2450,#171620);border:1px solid var(--line);border-radius:20px;
+          padding:1.6rem;text-align:center;box-shadow:0 12px 50px #0007}
+  .kicker{color:var(--brand);font-weight:800;letter-spacing:1px;text-transform:uppercase;font-size:.78rem}
+  h1{font-size:2rem;margin:.4rem 0}
+  .lineup{color:var(--ink);font-size:1.05rem;margin:.3rem 0}
+  .meta{color:var(--dim);margin:.8rem 0}
+  .price{font-size:1.6rem;font-weight:800;color:var(--brand);margin:.6rem 0}
+  .fee{color:var(--dim);font-size:.85rem}
+  .fee b{color:#3ecf8e}
+  a.buy,button.buy{display:block;width:100%;margin-top:1rem;background:var(--brand);color:#0d0c14;text-decoration:none;
+       border:0;border-radius:12px;padding:1rem;font-size:1.1rem;font-weight:800;cursor:pointer}
+  .blurb{color:var(--dim);margin-top:1rem;font-size:.95rem}
+  .ticket{display:none;background:#fff;color:#111;border-radius:16px;padding:1.2rem;margin-top:1.2rem;text-align:center}
+  .ticket h2{margin:.2rem 0}
+  .qr{width:180px;height:180px;margin:1rem auto;background:#111;display:grid;place-items:center;color:#fff;border-radius:8px;font-family:monospace;font-size:.7rem;padding:.5rem;word-break:break-all}
+  footer{text-align:center;color:var(--dim);font-size:.78rem;padding:1.5rem 0}
+  footer a{color:var(--brand)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<script>
+// ═══ CONFIG — per event ═══
+const E = {
+  kicker: "Live at The Demo Hotel",
+  title: "Friday Night Sessions",
+  lineup: "The Artist · Support: Sam K. · Jordan M.",
+  when: "Fri 22 Aug 2026 · doors 7:30pm",
+  where: "The Demo Hotel, 123 High St, Preston",
+  price: "$15",
+  accent: "#ffd25a",
+  // The venue/artist's OWN Stripe Payment Link — money goes straight to them.
+  buyLink: "https://buy.stripe.com/your-payment-link",
+  blurb: "No booking fees. Your money goes straight to the venue and the artists — not a ticketing monopoly.",
+};
+// ═══ end config ═══
+</script>
+
+<div class="poster">
+  <div class="kicker" id="kicker"></div>
+  <h1 id="title"></h1>
+  <div class="lineup" id="lineup"></div>
+  <div class="meta"><div id="when"></div><div id="where"></div></div>
+  <div class="price" id="price"></div>
+  <div class="fee">Booking fee: <b>$0.00</b> — vs the ~30% the big guys add</div>
+  <a class="buy" id="buy">Get ticket →</a>
+  <div class="blurb" id="blurb"></div>
+
+  <!-- After purchase (v2 backend fills this with a real signed QR) -->
+  <div class="ticket" id="ticket">
+    <div style="color:#888;font-size:.8rem;letter-spacing:1px">ADMIT ONE</div>
+    <h2 id="tTitle"></h2>
+    <div id="tWhen" style="color:#555"></div>
+    <div class="qr" id="qr">your ticket QR</div>
+    <div style="color:#555;font-size:.85rem">Show this at the door</div>
+  </div>
+</div>
+
+<footer>Free, fee-free ticketing by <a href="https://openmic.techduinn.dpdns.org">openmic / Tech Duinn</a> — open licence, built to take live music back from the middlemen.</footer>
+
+<script>
+document.documentElement.style.setProperty('--brand', E.accent);
+document.title = E.title + " — tickets";
+kicker.textContent=E.kicker; title.textContent=E.title; lineup.textContent=E.lineup;
+when.textContent=E.when; where.textContent=E.where; price.textContent=E.price;
+buy.href=E.buyLink; blurb.textContent=E.blurb;
+tTitle.textContent=E.title; tWhen.textContent=E.when;
+// v2: after a successful Stripe purchase, a Worker issues a signed code and this page shows the ticket QR.
+</script>
+</div>
+</body>
+</html>

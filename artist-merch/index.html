@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artist merch — buy direct</title>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     ARTIST MERCH PAGE (openmic pipeline). One page per artist, QR at the show.
+     Every "Buy" goes STRAIGHT to the artist — no cut, no middleman.
+     Edit the CONFIG block, deploy free, print the page URL as a QR for the merch table.
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style>
+  :root{--brand:#ff5c8a;--bg:#0e0d12;--card:#191722;--line:#2c2937;--ink:#f2eefb;--dim:#a99fc0}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:radial-gradient(900px 420px at 50% -8%,#221d33,var(--bg));color:var(--ink)}
+  .wrap{max-width:640px;margin:0 auto;padding:1.2rem}
+  header{text-align:center;padding:1rem 0 1.4rem}
+  .avatar{width:88px;height:88px;border-radius:50%;background:#2a2540 center/cover;margin:0 auto .6rem;display:grid;place-items:center;font-size:2rem;border:2px solid var(--brand)}
+  h1{font-size:1.7rem;margin:.2rem 0}
+  .tag{color:var(--dim)}
+  .at{display:inline-block;margin-top:.6rem;font-size:.85rem;font-weight:700;color:var(--brand);border:1px solid var(--brand);border-radius:99px;padding:.35rem 1rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.9rem;margin-top:1rem}
+  .item{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+  .item .img{aspect-ratio:1;background:#231f30 center/cover;display:grid;place-items:center;font-size:1.8rem;color:var(--dim)}
+  .item .b{padding:.7rem;display:flex;flex-direction:column;gap:.35rem;flex:1}
+  .item .t{font-weight:700} .item .d{color:var(--dim);font-size:.82rem;flex:1}
+  .item .row{display:flex;justify-content:space-between;align-items:center}
+  .item .price{color:var(--brand);font-weight:800}
+  .item a{background:var(--brand);color:#0e0d12;text-decoration:none;font-weight:800;font-size:.82rem;padding:.35rem .7rem;border-radius:8px}
+  .links{text-align:center;margin:1.4rem 0 0;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+  .links a{color:var(--brand);text-decoration:none;font-weight:700}
+  footer{text-align:center;color:var(--dim);font-size:.78rem;padding:1.6rem 0}
+  footer a{color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<script>
+// ═══ CONFIG — one per artist ═══
+const A = {
+  name: "The Artist",
+  tagline: "Preston · singer-songwriter",
+  accent: "#ff5c8a",
+  photo: "",                                  // url or leave "" for emoji
+  playingAt: "🎤 Playing The Demo Hotel · Tue 12 Aug",
+  links: { instagram:"https://instagram.com/", bandcamp:"https://bandcamp.com/", spotify:"https://spotify.com/" },
+  // Every buy link goes STRAIGHT to the artist (Stripe/PayPal/Bandcamp/insta DM).
+  merch: [
+    { name:"Tour tee", desc:"Black, hand-screened. S–XL.", price:"$35", img:"", buy:"https://" },
+    { name:"Sticker pack", desc:"3 stickers.", price:"$8", img:"", buy:"https://" },
+    { name:"Debut EP (CD)", desc:"5 tracks, signed.", price:"$20", img:"", buy:"https://" },
+    { name:"Album (digital)", desc:"Instant download.", price:"$12", img:"", buy:"https://" },
+  ],
+};
+// ═══ end config ═══
+</script>
+
+<header>
+  <div class="avatar" id="av">🎸</div>
+  <h1 id="nm"></h1>
+  <div class="tag" id="tg"></div>
+  <div class="at" id="at"></div>
+</header>
+
+<div class="grid" id="grid"></div>
+<div class="links" id="links"></div>
+
+<footer>
+  Buy direct — every cent goes to the artist. Merch pipeline by
+  <a href="https://openmic.techduinn.dpdns.org">openmic</a>.
+</footer>
+
+<script>
+document.documentElement.style.setProperty('--brand', A.accent);
+document.title = A.name + " — merch";
+nm.textContent = A.name; tg.textContent = A.tagline; at.textContent = A.playingAt;
+if(A.photo){ av.style.backgroundImage=`url('${A.photo}')`; av.textContent=''; }
+grid.innerHTML = A.merch.map(m=>`<div class="item">
+  <div class="img" style="${m.img?`background-image:url('${m.img}')`:''}">${m.img?'':'🎽'}</div>
+  <div class="b"><div class="t">${m.name}</div><div class="d">${m.desc||''}</div>
+    <div class="row"><span class="price">${m.price}</span><a href="${m.buy}">Buy →</a></div></div></div>`).join('');
+links.innerHTML = Object.entries(A.links).map(([k,u])=>`<a href="${u}">${k}</a>`).join('');
+</script>
+</div>
+</body>
+</html>
