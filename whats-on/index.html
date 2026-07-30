@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What's On — Melbourne open mics & live music</title>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     WHAT'S ON — free, no-paywall, no-ads listing of open mics & local live music.
+     The discovery front door: venues get free promo, artists find rooms to play,
+     every entry links to the venue's site + openmic sign-up. Add nights to the
+     CONFIG (or feed it from a shared list). Part of the Free Music Stack (MIT).
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style>
+  :root{--brand:#ff8a3d;--bg:#0f0e0c;--card:#1a1815;--line:#2e2a24;--ink:#f5f0e8;--dim:#b0a494}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);
+       background:radial-gradient(1000px 480px at 50% -8%,#241d14,var(--bg));min-height:100vh}
+  .wrap{max-width:760px;margin:0 auto;padding:1.2rem}
+  header{text-align:center;padding:1.4rem 0 .6rem}
+  h1{font-size:1.9rem;margin:.2rem 0} .sub{color:var(--dim)}
+  .free{display:inline-block;margin-top:.5rem;font-size:.75rem;font-weight:800;letter-spacing:.5px;color:var(--brand);border:1px solid var(--brand);border-radius:99px;padding:.3rem .9rem;text-transform:uppercase}
+  .controls{position:sticky;top:0;z-index:5;background:#0f0e0cee;backdrop-filter:blur(8px);padding:.7rem 0;border-bottom:1px solid var(--line);margin-bottom:.5rem}
+  .row{display:flex;gap:.5rem;flex-wrap:wrap}
+  input.search{flex:1;min-width:150px;padding:.6rem .8rem;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+  .chip{font-family:sans-serif;font-size:.82rem;font-weight:700;padding:.45rem .8rem;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--dim);cursor:pointer}
+  .chip.on{background:var(--brand);color:#0f0e0c;border-color:var(--brand)}
+  .chips{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem}
+  .night{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem;margin:.6rem 0;display:flex;gap:1rem;align-items:flex-start}
+  .when{flex:0 0 64px;text-align:center}
+  .when .d{font-family:sans-serif;font-weight:800;color:var(--brand);text-transform:uppercase;font-size:.85rem}
+  .when .t{color:var(--dim);font-size:.8rem}
+  .body{flex:1;min-width:0}
+  .body .v{font-weight:700;font-size:1.05rem} .body .meta{color:var(--dim);font-size:.88rem}
+  .tags{margin-top:.3rem;display:flex;gap:.35rem;flex-wrap:wrap}
+  .tag{font-size:.72rem;color:var(--dim);border:1px solid var(--line);border-radius:6px;padding:.1rem .4rem}
+  .acts{margin-top:.5rem;display:flex;gap:.5rem;flex-wrap:wrap}
+  .acts a{font-family:sans-serif;font-weight:700;font-size:.82rem;text-decoration:none;padding:.35rem .7rem;border-radius:8px}
+  .acts a.play{background:var(--brand);color:#0f0e0c} .acts a.site{background:#241f18;color:var(--ink);border:1px solid var(--line)}
+  .empty{text-align:center;color:var(--dim);padding:2rem}
+  .sub-block{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem;margin-top:1.5rem;text-align:center}
+  .sub-block form{display:flex;gap:.5rem;margin-top:.6rem;max-width:360px;margin-left:auto;margin-right:auto}
+  .sub-block input{flex:1;padding:.6rem;border-radius:10px;border:1px solid var(--line);background:#241f18;color:var(--ink)}
+  .sub-block button{background:var(--brand);color:#0f0e0c;border:0;border-radius:10px;padding:.6rem 1rem;font-weight:800;cursor:pointer}
+  footer{text-align:center;color:var(--dim);font-size:.78rem;padding:1.6rem 0} footer a{color:var(--brand)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>🎤 What's On</h1>
+  <div class="sub">Melbourne open mics & grassroots live music</div>
+  <div class="free">Free · no ads · no paywall</div>
+</header>
+
+<div class="controls">
+  <div class="row"><input class="search" id="q" placeholder="Search venue, suburb…"></div>
+  <div class="chips" id="dayChips"></div>
+</div>
+
+<div id="list"></div>
+<div class="empty" id="empty" style="display:none">No nights match — try clearing filters.</div>
+
+<div class="sub-block">
+  <b>Get the weekly what's-on</b>
+  <div class="sub" style="font-size:.88rem">A free email of Melbourne's open mics & local gigs. No ads, no spam.</div>
+  <form id="subForm"><input id="subEmail" type="email" placeholder="your email" required><button>Subscribe</button></form>
+</div>
+
+<footer>
+  Run a night? <a id="addlink" href="#">Get listed free</a> · Free what's-on by
+  <a href="https://openmic.techduinn.dpdns.org">openmic / Free Music Stack</a>. Anyone can run their own.
+</footer>
+</div>
+
+<script>
+// ═══ CONFIG — the listings + subscribe target ═══
+const CFG = {
+  subscribeAction: "",                 // your own list form (Buttondown/Listmonk/Formspree). "" = mailto.
+  subscribeEmail: "hello@example.com",
+  getListedEmail: "hello@example.com",
+  nights: [
+    // day: Mon..Sun ; type: "Open mic" | "Live music" | "Jam" ; signup = openmic link ; site = venue site
+    { venue:"The Demo Hotel", suburb:"Preston", day:"Tue", time:"7:30pm", type:"Open mic",
+      host:"House", cost:"Free", signup:"https://openmic.techduinn.dpdns.org/demo", site:"" },
+    { venue:"The Retreat Hotel", suburb:"Brunswick", day:"Wed", time:"8pm", type:"Open mic",
+      host:"Local muso", cost:"Free", signup:"https://openmic.techduinn.dpdns.org/demo", site:"" },
+    { venue:"Platform 3095", suburb:"Preston", day:"Thu", time:"7pm", type:"Open mic",
+      host:"Rotating artists", cost:"Free", signup:"https://openmic.techduinn.dpdns.org/demo", site:"" },
+  ],
+};
+// ═══ end config ═══
+
+const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+let dayFilter=null, q="";
+const dc=document.getElementById('dayChips');
+dc.innerHTML = `<span class="chip on" data-d="">All</span>` + DAYS.map(d=>`<span class="chip" data-d="${d}">${d}</span>`).join('');
+dc.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+  dc.querySelectorAll('.chip').forEach(x=>x.classList.remove('on')); c.classList.add('on');
+  dayFilter=c.dataset.d||null; render();
+});
+document.getElementById('q').oninput=e=>{ q=e.target.value.toLowerCase(); render(); };
+
+function render(){
+  let ns=CFG.nights.filter(n=>(!dayFilter||n.day===dayFilter) &&
+    (!q || (n.venue+' '+n.suburb+' '+n.type).toLowerCase().includes(q)));
+  ns.sort((a,b)=>DAYS.indexOf(a.day)-DAYS.indexOf(b.day));
+  const list=document.getElementById('list');
+  document.getElementById('empty').style.display = ns.length?'none':'block';
+  list.innerHTML = ns.map(n=>`<div class="night">
+    <div class="when"><div class="d">${n.day}</div><div class="t">${n.time}</div></div>
+    <div class="body"><div class="v">${n.venue}</div>
+      <div class="meta">${n.suburb}${n.host?' · '+n.host:''}</div>
+      <div class="tags"><span class="tag">${n.type}</span>${n.cost?`<span class="tag">${n.cost}</span>`:''}</div>
+      <div class="acts">
+        <a class="play" href="${n.signup}">🎤 Sign up to play</a>
+        ${n.site?`<a class="site" href="${n.site}">Venue →</a>`:''}
+      </div></div></div>`).join('');
+}
+render();
+
+// subscribe + get-listed
+const sf=document.getElementById('subForm');
+if(CFG.subscribeAction){ sf.action=CFG.subscribeAction; sf.method='post'; document.getElementById('subEmail').name='email'; }
+else sf.onsubmit=e=>{ e.preventDefault(); location.href=`mailto:${CFG.subscribeEmail}?subject=Subscribe to What's On&body=${encodeURIComponent(document.getElementById('subEmail').value)}`; };
+document.getElementById('addlink').href=`mailto:${CFG.getListedEmail}?subject=Get my open mic listed on What's On`;
+</script>
+</body>
+</html>
