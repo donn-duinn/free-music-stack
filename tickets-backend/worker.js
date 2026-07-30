@@ -16,6 +16,16 @@
 const json = (o, s = 200) => new Response(JSON.stringify(o), { status: s, headers: { "content-type": "application/json", "access-control-allow-origin": "*" } });
 const html = (h) => new Response(h, { headers: { "content-type": "text/html;charset=utf-8" } });
 const uid = () => crypto.randomUUID().replace(/-/g, "");
+// escape anything user-controllable before it touches HTML
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+// constant-time key compare — don't leak length/prefix via early return
+function keyEq(a, b) {
+  a = String(a || ""); b = String(b || "");
+  if (a.length !== b.length) return false;
+  let out = 0;
+  for (let i = 0; i < a.length; i++) out |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return out === 0;
+}
 
 export default {
   async fetch(req, env) {
@@ -25,25 +35,32 @@ export default {
 
     // ── issue a ticket (admin / Stripe webhook) ──
     if (p === "/issue" && req.method === "POST") {
-      if ((req.headers.get("x-admin-key") || "") !== env.ADMIN_KEY) return json({ error: "unauthorized" }, 401);
+      if (!keyEq(req.headers.get("x-admin-key"), env.ADMIN_KEY)) return json({ error: "unauthorized" }, 401);
       const b = await req.json().catch(() => ({}));
       if (!b.event) return json({ error: "event required" }, 400);
+      const event = String(b.event).slice(0, 200);
+      const buyer = String(b.buyer || "").slice(0, 200);
       const code = uid();
       await env.DB.prepare("INSERT INTO tickets (code,event,buyer,status,issued_at) VALUES (?,?,?,'valid',?)")
-        .bind(code, b.event, b.buyer || "", new Date().toISOString()).run();
+        .bind(code, event, buyer, new Date().toISOString()).run();
       return json({ code, url: `${url.origin}/t/${code}` });
     }
 
     // ── the ticket page (QR) ──
     if (p.startsWith("/t/")) {
       const code = p.slice(3);
+      // codes are hex uuids — reject anything else outright (no lookup, no reflection)
+      if (!/^[a-f0-9]{32}$/.test(code)) return html(page("Ticket not found", "This ticket doesn't exist.", "#c00"));
       const row = await env.DB.prepare("SELECT event,status FROM tickets WHERE code=?").bind(code).first();
       if (!row) return html(page("Ticket not found", "This ticket doesn't exist.", "#c00"));
+      // NOTE (red-team finding #1, OPEN): QR is still rendered by a third-party service,
+      // which means the admit-code leaves the venue's domain. Tracked for replacement with
+      // an offline in-browser encoder (needs a real-device scan test before going live).
       const qr = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(code)}`;
-      return html(page(row.event,
+      return html(page(esc(row.event),
         `<div style="color:#666;letter-spacing:2px;font-size:.8rem">ADMIT ONE</div>
          <img src="${qr}" alt="ticket QR" style="margin:1rem auto;display:block;border-radius:10px">
-         <div style="font-family:monospace;color:#888;font-size:.7rem;word-break:break-all">${code}</div>
+         <div style="font-family:monospace;color:#888;font-size:.7rem;word-break:break-all">${esc(code)}</div>
          <div style="margin-top:.6rem;font-weight:800;color:${row.status === "used" ? "#c00" : "#0a0"}">
            ${row.status === "used" ? "ALREADY USED" : "Show this at the door"}</div>`, "#111", true));
     }
@@ -51,8 +68,9 @@ export default {
     // ── validate at the door (staff) ──
     if (p === "/validate" && req.method === "POST") {
       const b = await req.json().catch(() => ({}));
-      if ((b.key || req.headers.get("x-door-key") || "") !== env.DOOR_KEY) return json({ ok: false, status: "unauthorized" }, 401);
+      if (!keyEq(b.key || req.headers.get("x-door-key"), env.DOOR_KEY)) return json({ ok: false, status: "unauthorized" }, 401);
       const code = (b.code || "").trim();
+      if (!/^[a-f0-9]{32}$/.test(code)) return json({ ok: false, status: "invalid" });
       const row = await env.DB.prepare("SELECT event,status FROM tickets WHERE code=?").bind(code).first();
       if (!row) return json({ ok: false, status: "invalid" });
       if (row.status === "used") return json({ ok: false, status: "already_used", event: row.event });
