@@ -12,6 +12,7 @@ Every tool below is a single self-contained HTML file. Edit one `CONFIG` block, 
 | [`venue-site/`](venue-site/) | One-page music-venue site: gig nights + drinks & food menus + **local art wall** (patrons buy the art off the walls, direct to the artist) | Squarespace/Wix ($30+/mo), Etsy (art cut) |
 | [`tickets/`](tickets/) | Event/ticket page — buy goes **direct to the venue/artist's Stripe**. Booking fee: **$0.00** | Ticketek/Ticketmaster (~30% fees) |
 | [`artist-merch/`](artist-merch/) | Artist merch page — QR it on the merch table, every "Buy" goes **straight to the artist** | Bandcamp/Shopify (cut + fees) |
+| [`artist-hub/`](artist-hub/) | Artist's home base: music, tip jar, merch, mailing list, gigs — own your fans, keep 100% | Linktree / Spotify-for-Artists / Patreon / Meta |
 | [`loyalty/`](loyalty/) | Digital loyalty card on the customer's own phone, **zero data collected** — the "Pub Plus" for independents | Square/Toast (% + monthly) |
 
 Flagship, live: **openmic** — free open-mic sign-up — https://openmic.techduinn.dpdns.org
