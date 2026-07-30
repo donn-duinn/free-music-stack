@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Music — listen & buy direct</title>
+<!-- ═══════════════════════════════════════════════════════════════════════
+     DIRECT MUSIC PLAYER — the anti-Spotify. Fans stream the tracks, then buy /
+     download DIRECT — name your price, artist keeps 100%. Host your audio on your
+     own space (R2, your site, archive.org) and point the config at it.
+     Edit CONFIG, deploy free. Part of the Free Music Stack (MIT).
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style>
+  :root{--brand:#1ed760;--bg:#0a0f0c;--card:#121a15;--line:#20301f;--ink:#eefff4;--dim:#93b7a2}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);
+       background:radial-gradient(900px 500px at 50% -10%,#132a1c,var(--bg));min-height:100vh}
+  .wrap{max-width:480px;margin:0 auto;padding:1.3rem}
+  .top{display:flex;gap:1rem;align-items:center}
+  .cover{width:120px;height:120px;border-radius:14px;background:#1a2a1f center/cover;display:grid;place-items:center;font-size:2.4rem;flex:0 0 auto;box-shadow:0 10px 30px #0007}
+  .top h1{font-size:1.4rem;margin:.1rem 0} .by{color:var(--dim)}
+  .rel{color:var(--dim);font-size:.85rem;margin-top:.2rem}
+  ul{list-style:none;padding:0;margin:1.2rem 0 0}
+  li{display:flex;align-items:center;gap:.8rem;padding:.7rem;border-radius:10px;cursor:pointer}
+  li:hover{background:#ffffff08} li.playing{background:#1ed76015}
+  .play{flex:0 0 34px;height:34px;border-radius:50%;border:1px solid var(--brand);color:var(--brand);display:grid;place-items:center;font-size:.9rem}
+  li.playing .play{background:var(--brand);color:#0a0f0c}
+  .tn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dur{color:var(--dim);font-size:.85rem}
+  .bar{margin:1.2rem 0 .3rem;height:6px;background:#0b120d;border-radius:99px;overflow:hidden;cursor:pointer}
+  .fill{height:100%;width:0;background:var(--brand)}
+  .time{display:flex;justify-content:space-between;color:var(--dim);font-size:.78rem}
+  .buy{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.1rem;margin-top:1.4rem;text-align:center}
+  .buy h2{font-size:1rem;margin:.1rem 0}
+  .prices{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.7rem}
+  .prices a{flex:1;min-width:70px;text-align:center;background:var(--brand);color:#0a0f0c;text-decoration:none;font-weight:800;padding:.65rem;border-radius:10px}
+  .keep{color:var(--brand);font-weight:700;font-size:.82rem;margin-top:.6rem}
+  footer{text-align:center;color:var(--dim);font-size:.76rem;padding:1.6rem 0} footer a{color:var(--brand)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<script>
+// ═══ CONFIG — one per release ═══
+const M = {
+  artist: "The Artist",
+  release: "Debut EP",
+  year: "2026",
+  accent: "#1ed760",
+  cover: "",                       // url or "" for emoji
+  // host your audio anywhere you control (R2 / your site / archive.org) — point here
+  tracks: [
+    { title:"Opening Track", url:"", dur:"3:12" },
+    { title:"Second Song",   url:"", dur:"2:48" },
+    { title:"The Single",    url:"", dur:"3:40" },
+  ],
+  // BUY / DOWNLOAD — direct links (Stripe/PayPal/your store). Name your price. Keep 100%.
+  buy: [ ["$7","https://"], ["$12","https://"], ["$25","https://"], ["Name your price","https://"] ],
+  downloadNote: "Instant download after purchase — lossless + MP3.",
+};
+// ═══ end config ═══
+</script>
+
+<div class="top">
+  <div class="cover" id="cover">🎵</div>
+  <div><h1 id="rel"></h1><div class="by" id="by"></div><div class="rel" id="yr"></div></div>
+</div>
+
+<ul id="tracks"></ul>
+
+<div class="bar" id="bar"><div class="fill" id="fill"></div></div>
+<div class="time"><span id="cur">0:00</span><span id="nowp" style="color:var(--brand)"></span><span id="tot">0:00</span></div>
+
+<div class="buy">
+  <h2>💚 Love it? Buy it direct — the artist keeps 100%</h2>
+  <div class="prices" id="prices"></div>
+  <div class="keep" id="dl"></div>
+</div>
+
+<footer>No streaming pennies. Buy direct, artist keeps it all. Player by
+  <a href="https://openmic.techduinn.dpdns.org">openmic / Free Music Stack</a>.</footer>
+
+<audio id="a"></audio>
+</div>
+
+<script>
+document.documentElement.style.setProperty('--brand', M.accent);
+document.title = M.artist + " — " + M.release;
+rel.textContent=M.release; by.textContent=M.artist; yr.textContent=M.year;
+if(M.cover){ cover.style.backgroundImage=`url('${M.cover}')`; cover.textContent=''; }
+dl.textContent = M.downloadNote;
+prices.innerHTML = M.buy.map(b=>`<a href="${b[1]}">${b[0]}</a>`).join('');
+const a=document.getElementById('a'); let idx=-1;
+const fmt=s=>isNaN(s)?'0:00':Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+document.getElementById('tracks').innerHTML = M.tracks.map((t,i)=>
+  `<li data-i="${i}"><div class="play">▶</div><div class="tn">${i+1}. ${t.title}</div><div class="dur">${t.dur||''}</div></li>`).join('');
+function playIdx(i){
+  const t=M.tracks[i]; if(!t) return;
+  if(!t.url){ document.getElementById('nowp').textContent='(no audio file set)'; return; }
+  idx=i; a.src=t.url; a.play();
+  document.querySelectorAll('#tracks li').forEach(li=>li.classList.toggle('playing', +li.dataset.i===i));
+  document.querySelectorAll('#tracks .play').forEach((p,j)=>p.textContent = j===i?'⏸':'▶');
+  document.getElementById('nowp').textContent = t.title;
+}
+document.querySelectorAll('#tracks li').forEach(li=>li.onclick=()=>{
+  const i=+li.dataset.i; if(i===idx && !a.paused){ a.pause(); li.querySelector('.play').textContent='▶'; }
+  else if(i===idx && a.paused){ a.play(); li.querySelector('.play').textContent='⏸'; }
+  else playIdx(i);
+});
+a.ontimeupdate=()=>{ document.getElementById('fill').style.width=(a.currentTime/a.duration*100||0)+'%';
+  document.getElementById('cur').textContent=fmt(a.currentTime); document.getElementById('tot').textContent=fmt(a.duration); };
+a.onended=()=> playIdx(idx+1);
+document.getElementById('bar').onclick=e=>{ const r=e.currentTarget.getBoundingClientRect(); a.currentTime=(e.clientX-r.left)/r.width*a.duration; };
+</script>
+</body>
+</html>
