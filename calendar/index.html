@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What's on — open mics & gigs</title>
+<meta name="description" content="A live calendar of open-mic nights and gigs. Free to list, free to run. Powered by the Free Music Stack.">
+<meta name="theme-color" content="#7C5CFF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230b0a12'/%3E%3Ctext x='50' y='72' font-size='56' text-anchor='middle'%3E%F0%9F%93%85%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--violet:#7C5CFF;--bg:#08070e;--card:#141220;--card2:#171428;--line:#282340;--ink:#f3f1fb;--dim:#9c94bd;
+        --openmic:#8b6dff;--gig:#f5b83d;--whatson:#3ecf8e}
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;color:var(--ink);
+       background:radial-gradient(900px 560px at 50% -12%,#2a1d55,transparent),var(--bg);min-height:100vh}
+  .wrap{max-width:940px;margin:0 auto;padding:1.8rem 1.1rem 3rem}
+  .kick{color:var(--violet);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.72rem}
+  h1{margin:.2rem 0 .1rem;font-size:1.7rem;letter-spacing:-.4px}
+  .sub{color:var(--dim);font-size:.92rem}
+  .bar{display:flex;align-items:center;gap:.6rem;margin:1.3rem 0 .7rem;flex-wrap:wrap}
+  .nav{display:flex;align-items:center;gap:.4rem}
+  .nav button{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:10px;
+              width:38px;height:38px;font-size:1.1rem;cursor:pointer}
+  .nav button:hover{border-color:var(--violet)}
+  #month{font-weight:800;font-size:1.15rem;min-width:190px;text-align:center}
+  .chips{display:flex;gap:.4rem;margin-left:auto;flex-wrap:wrap}
+  .chip{background:var(--card);border:1px solid var(--line);color:var(--dim);border-radius:99px;padding:.3rem .8rem;
+        font-size:.8rem;cursor:pointer}
+  .chip.on{background:var(--violet);border-color:var(--violet);color:#fff}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+  .dow{color:var(--dim);font-size:.72rem;text-transform:uppercase;letter-spacing:1px;text-align:center;padding:.3rem 0}
+  .cell{background:var(--card);border:1px solid var(--line);border-radius:10px;min-height:82px;padding:.35rem;overflow:hidden}
+  .cell.pad{background:transparent;border:0}
+  .cell.today{border-color:var(--violet);box-shadow:0 0 0 1px var(--violet)}
+  .dn{color:var(--dim);font-size:.75rem;font-weight:700}
+  .cell.today .dn{color:var(--violet)}
+  .ev{display:block;font-size:.66rem;line-height:1.25;border-radius:6px;padding:.15rem .3rem;margin-top:.2rem;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#0a0910;font-weight:700;text-decoration:none;cursor:default}
+  .ev.openmic{background:var(--openmic)} .ev.gig{background:var(--gig)} .ev.whatson{background:var(--whatson)}
+  @media(max-width:620px){.cell{min-height:58px} .ev{font-size:.6rem}}
+  .legend{display:flex;gap:1rem;margin:1rem 0;color:var(--dim);font-size:.82rem;flex-wrap:wrap}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:.35rem;vertical-align:middle}
+  h2{font-size:1.1rem;margin:1.8rem 0 .6rem}
+  .list .row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.7rem .9rem;margin:.5rem 0;
+             display:flex;gap:.8rem;align-items:flex-start}
+  .list .date{text-align:center;min-width:52px}
+  .list .date b{display:block;font-size:1.3rem;line-height:1} .list .date span{color:var(--dim);font-size:.72rem;text-transform:uppercase}
+  .list .t{font-weight:700} .list .v{color:var(--dim);font-size:.85rem} .list .n{color:var(--dim);font-size:.8rem;margin-top:.15rem}
+  .pill{font-size:.62rem;padding:.1rem .45rem;border-radius:99px;font-weight:800;color:#0a0910}
+  .pill.openmic{background:var(--openmic)} .pill.gig{background:var(--gig)} .pill.whatson{background:var(--whatson)}
+  .add{background:var(--card2);border:1px dashed var(--line);border-radius:12px;padding:1rem;color:var(--dim);font-size:.88rem;margin-top:1.4rem}
+  .add code{background:#000;color:var(--whatson);padding:.1rem .3rem;border-radius:5px}
+  footer{text-align:center;color:var(--dim);font-size:.8rem;margin-top:2rem} footer a{color:var(--violet)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kick">⚓ Free Music Stack</div>
+  <h1>What's on</h1>
+  <div class="sub">Open-mic nights and gigs. Free to list, free to run. Add yours below.</div>
+
+  <div class="bar">
+    <div class="nav">
+      <button id="prev" aria-label="previous month">‹</button>
+      <span id="month"></span>
+      <button id="next" aria-label="next month">›</button>
+      <button id="today" title="today" style="width:auto;padding:0 .7rem;font-size:.8rem">Today</button>
+    </div>
+    <div class="chips">
+      <span class="chip on" data-t="all">All</span>
+      <span class="chip" data-t="openmic">Open mics</span>
+      <span class="chip" data-t="gig">Gigs</span>
+      <span class="chip" data-t="whatson">What's on</span>
+    </div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="legend">
+    <span><span class="dot" style="background:var(--openmic)"></span>Open mic</span>
+    <span><span class="dot" style="background:var(--gig)"></span>Gig</span>
+    <span><span class="dot" style="background:var(--whatson)"></span>What's on</span>
+  </div>
+
+  <h2>Coming up</h2>
+  <div class="list" id="list"></div>
+
+  <div class="add">
+    <b>Run a night? List it free.</b> Edit the <code>EVENTS</code> array in this file.
+    Weekly night: <code>{title, venue, type:'openmic', day:2, from:'2026-09-08', time:'7pm'}</code>
+    (day 0=Sun … 6=Sat). One-off: <code>{title, venue, type:'gig', date:'2026-08-15', time:'8pm'}</code>.
+  </div>
+
+  <footer>⚓ Tech Duinn · <a href="https://donn-duinn.github.io/free-music-stack/">the free tools</a> ·
+    <a href="https://donn-duinn.github.io/free-music-stack/why/">why we built this</a></footer>
+</div>
+
+<script>
+// ─── EVENTS — real nights only. Weekly (day 0-6) or one-off (date). ───
+const EVENTS = [
+  {title:"Preston Community Open Mic", venue:"Venue TBC — Preston", type:"openmic", day:2, from:"2026-09-08",
+   time:"7:00pm", note:"Free to play, free to watch. Tips split evenly, everyone sees their share."},
+  {title:"The Drunken Poet Open Mic", venue:"The Drunken Poet, West Melbourne", type:"openmic", day:4,
+   time:"from 8:00pm", note:"Weekly Thursdays."},
+];
+
+const TYPES = {openmic:"Open mic", gig:"Gig", whatson:"What's on"};
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const iso = d => d.toISOString().slice(0,10);
+const parse = s => { const [y,m,d]=s.split("-").map(Number); return new Date(y, m-1, d); };
+
+let filter = "all";
+const now = new Date();
+let view = new Date(now.getFullYear(), now.getMonth(), 1);
+
+function eventsOn(date){
+  const day = date.getDay(), ds = iso(date);
+  return EVENTS.filter(e=>{
+    if(filter!=="all" && e.type!==filter) return false;
+    if(e.date) return e.date===ds;
+    if(e.day!==undefined){
+      if(e.day!==day) return false;
+      if(e.from && date < parse(e.from)) return false;
+      if(e.until && date > parse(e.until)) return false;
+      return true;
+    }
+    return false;
+  });
+}
+
+function renderGrid(){
+  const y=view.getFullYear(), m=view.getMonth();
+  document.getElementById('month').textContent = MONTHS[m]+" "+y;
+  const first=new Date(y,m,1).getDay(), days=new Date(y,m+1,0).getDate();
+  const g=document.getElementById('grid'); g.innerHTML="";
+  DOW.forEach(d=>{const e=document.createElement('div');e.className='dow';e.textContent=d;g.appendChild(e);});
+  for(let i=0;i<first;i++){const c=document.createElement('div');c.className='cell pad';g.appendChild(c);}
+  for(let d=1;d<=days;d++){
+    const date=new Date(y,m,d); const c=document.createElement('div'); c.className='cell';
+    if(iso(date)===iso(now)) c.className+=' today';
+    c.innerHTML=`<div class="dn">${d}</div>`;
+    eventsOn(date).forEach(e=>{
+      const s=document.createElement('span'); s.className='ev '+e.type;
+      s.textContent=e.title; s.title=e.title+" — "+e.venue+(e.time?" · "+e.time:"");
+      c.appendChild(s);
+    });
+    g.appendChild(c);
+  }
+}
+
+function renderList(){
+  const out=[]; const start=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  for(let i=0;i<60 && out.length<20;i++){
+    const date=new Date(start); date.setDate(start.getDate()+i);
+    eventsOn(date).forEach(e=>out.push({date,e}));
+  }
+  document.getElementById('list').innerHTML = out.length ? out.map(({date,e})=>`
+    <div class="row">
+      <div class="date"><b>${date.getDate()}</b><span>${MONTHS[date.getMonth()].slice(0,3)}</span></div>
+      <div style="flex:1"><div class="t">${e.title} <span class="pill ${e.type}">${TYPES[e.type]}</span></div>
+        <div class="v">${e.venue}${e.time?" · "+e.time:""}</div>
+        ${e.note?`<div class="n">${e.note}</div>`:""}</div>
+    </div>`).join("") : `<div class="row" style="color:var(--dim)">Nothing listed yet for the next few weeks. Add your night above.</div>`;
+}
+
+function render(){ renderGrid(); renderList(); }
+document.getElementById('prev').onclick=()=>{view.setMonth(view.getMonth()-1);render();};
+document.getElementById('next').onclick=()=>{view.setMonth(view.getMonth()+1);render();};
+document.getElementById('today').onclick=()=>{view=new Date(now.getFullYear(),now.getMonth(),1);render();};
+document.querySelectorAll('.chip').forEach(ch=>ch.onclick=()=>{
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on')); ch.classList.add('on');
+  filter=ch.dataset.t; render();
+});
+render();
+</script>
+</body>
+</html>
