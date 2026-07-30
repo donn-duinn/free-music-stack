@@ -89,7 +89,8 @@ document.title = M.artist + " — " + M.release;
 rel.textContent=M.release; by.textContent=M.artist; yr.textContent=M.year;
 if(M.cover){ cover.style.backgroundImage=`url('${M.cover}')`; cover.textContent=''; }
 dl.textContent = M.downloadNote;
-prices.innerHTML = M.buy.map(b=>`<a href="${b[1]}">${b[0]}</a>`).join('');
+const safeUrl=u=>/^(https?:|mailto:|tel:|\/|#)/i.test(String(u||'').trim())?u:'#';
+prices.innerHTML = M.buy.map(b=>`<a href="${safeUrl(b[1])}">${b[0]}</a>`).join('');
 const a=document.getElementById('a'); let idx=-1;
 const fmt=s=>isNaN(s)?'0:00':Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
 document.getElementById('tracks').innerHTML = M.tracks.map((t,i)=>

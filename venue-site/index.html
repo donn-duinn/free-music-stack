@@ -118,23 +118,25 @@ const V = {
 </footer>
 
 <script>
+// only allow safe link schemes — a pasted artist/staff link can't become javascript:/data: code
+const safeUrl=u=>/^(https?:|mailto:|tel:|\/|#)/i.test(String(u||'').trim())?u:'#';
 const menu = arr => arr.map(c=>`<div class="mcat"><h3>${c.cat}</h3>${
   c.items.map(i=>`<div class="row"><span>${i[0]}</span><span class="p">${i[1]}</span></div>`).join('')}</div>`).join('');
 document.documentElement.style.setProperty('--brand', V.accent);
 document.title = V.name + " — live music, menus & local art";
 logo.textContent = V.name; hname.textContent = V.name; htag.textContent = V.tagline;
-hnight.textContent = V.night; cta.href = V.openmicSignup;
+hnight.textContent = V.night; cta.href = safeUrl(V.openmicSignup);
 addr.innerHTML="📍 "+V.address; hrs.innerHTML="🕑 "+V.hours; ph.innerHTML="📞 "+V.phone;
 evs.innerHTML = V.events.map(e=>`<div class="ev"><b style="font-size:1.1rem">${e.title}</b><br>
   <span style="color:var(--dim)">${e.when}</span><p>${e.blurb}</p>
-  <a class="signup" href="${V.openmicSignup}">Sign up to perform →</a></div>`).join('');
+  <a class="signup" href="${safeUrl(V.openmicSignup)}">Sign up to perform →</a></div>`).join('');
 mdrinks.innerHTML = menu(V.drinks); mfood.innerHTML = menu(V.food);
 artblurb.textContent = V.artBlurb;
 artwall.innerHTML = V.art.map(a=>`<div class="piece">
   <div class="img" style="${a.img?`background-image:url('${a.img}')`:''}">${a.img?'':'🖼️'}</div>
   <div class="body"><div class="t">${a.title}</div><div class="by">by ${a.artist}</div>
-    <div class="buy"><span class="price">${a.price}</span><a href="${a.buy}">Buy →</a></div></div></div>`).join('');
-soc.innerHTML = Object.entries(V.socials).map(([k,u])=>`<a href="${u}" style="color:var(--dim)">${k}</a>`).join(' · ');
+    <div class="buy"><span class="price">${a.price}</span><a href="${safeUrl(a.buy)}">Buy →</a></div></div></div>`).join('');
+soc.innerHTML = Object.entries(V.socials).map(([k,u])=>`<a href="${safeUrl(u)}" style="color:var(--dim)">${k}</a>`).join(' · ');
 </script>
 </body>
 </html>

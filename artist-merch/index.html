@@ -71,6 +71,7 @@ const A = {
 </footer>
 
 <script>
+const safeUrl=u=>/^(https?:|mailto:|tel:|\/|#)/i.test(String(u||'').trim())?u:'#';
 document.documentElement.style.setProperty('--brand', A.accent);
 document.title = A.name + " — merch";
 nm.textContent = A.name; tg.textContent = A.tagline; at.textContent = A.playingAt;
@@ -78,8 +79,8 @@ if(A.photo){ av.style.backgroundImage=`url('${A.photo}')`; av.textContent=''; }
 grid.innerHTML = A.merch.map(m=>`<div class="item">
   <div class="img" style="${m.img?`background-image:url('${m.img}')`:''}">${m.img?'':'🎽'}</div>
   <div class="b"><div class="t">${m.name}</div><div class="d">${m.desc||''}</div>
-    <div class="row"><span class="price">${m.price}</span><a href="${m.buy}">Buy →</a></div></div></div>`).join('');
-links.innerHTML = Object.entries(A.links).map(([k,u])=>`<a href="${u}">${k}</a>`).join('');
+    <div class="row"><span class="price">${m.price}</span><a href="${safeUrl(m.buy)}">Buy →</a></div></div></div>`).join('');
+links.innerHTML = Object.entries(A.links).map(([k,u])=>`<a href="${safeUrl(u)}">${k}</a>`).join('');
 </script>
 </div>
 </body>

@@ -93,9 +93,11 @@ document.documentElement.style.setProperty('--brand', A.accent);
 document.title = A.name + " — home base";
 nm.textContent=A.name; bio.textContent=A.bio; genre.textContent=A.genre;
 if(A.photo){ av.style.backgroundImage=`url('${A.photo}')`; av.textContent=''; }
-const linkRow=(l,u,ic)=>`<a class="link" href="${u}"><span>${ic||'🔗'}</span><span>${l}</span><span class="ar">→</span></a>`;
+// only allow safe link schemes — a pasted link can't become javascript:/data: code
+const safeUrl=u=>/^(https?:|mailto:|tel:|\/|#)/i.test(String(u||'').trim())?u:'#';
+const linkRow=(l,u,ic)=>`<a class="link" href="${safeUrl(u)}"><span>${ic||'🔗'}</span><span>${l}</span><span class="ar">→</span></a>`;
 music.innerHTML = A.music.map(m=>linkRow(m.label,m.url,m.icon)).join('');
-tips.innerHTML = A.tips.map(t=>`<a href="${t[1]}">${t[0]}</a>`).join('');
+tips.innerHTML = A.tips.map(t=>`<a href="${safeUrl(t[1])}">${t[0]}</a>`).join('');
 merch.innerHTML = A.merchUrl ? linkRow("Merch — buy direct", A.merchUrl, "🎽") : '';
 gigs.innerHTML = A.gigs.length ? A.gigs.map(g=>`<div class="gig"><b>${g.title}</b><span>${g.when}</span></div>`).join('') : '<span style="color:var(--dim)">No gigs listed</span>';
 if(!A.gigs.length) gigblock.style.display='none';
