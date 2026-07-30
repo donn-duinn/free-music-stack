@@ -4,115 +4,122 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Free Music Stack — AI here to pay artists, not replace them</title>
-<meta name="description" content="Free, open-source tools that give grassroots music venues and independent artists the infrastructure big tech charges rent for. No cut. No middleman. Built to take live music back.">
+<meta name="description" content="Free, open-source tools that give grassroots music venues and independent artists the infrastructure big tech charges rent for. No cut. No middleman. Try every tool live.">
+<meta property="og:title" content="Free Music Stack — AI here to pay artists, not replace them">
+<meta property="og:description" content="Free, open tools taking live music back from big tech. Try them live.">
 <style>
   :root{--brand:#ff5c8a;--brand2:#8b5cf6;--bg:#0b0a12;--card:#15131f;--line:#272338;--ink:#f4f1fb;--dim:#a89ec6}
   *{box-sizing:border-box}
-  body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);
-       background:var(--bg)}
-  .wrap{max-width:900px;margin:0 auto;padding:0 1.2rem}
+  body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+  .wrap{max-width:960px;margin:0 auto;padding:0 1.2rem}
   a{color:var(--brand)}
-  /* hero */
-  .hero{text-align:center;padding:4rem 1rem 3rem;background:radial-gradient(700px 400px at 50% -10%,#2a1d4d,transparent)}
+  .hero{text-align:center;padding:4rem 1rem 2.5rem;background:radial-gradient(700px 400px at 50% -10%,#2a1d4d,transparent)}
   .kick{color:var(--brand);font-weight:800;letter-spacing:1.5px;text-transform:uppercase;font-size:.8rem}
-  h1{font-size:2.6rem;line-height:1.15;margin:.6rem auto;max-width:16ch;
-     background:linear-gradient(100deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .lede{color:var(--dim);font-size:1.2rem;max-width:44ch;margin:1rem auto}
+  h1{font-size:2.7rem;line-height:1.13;margin:.6rem auto;max-width:16ch;background:linear-gradient(100deg,var(--brand),var(--brand2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{color:var(--dim);font-size:1.2rem;max-width:46ch;margin:1rem auto}
   .ctas{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-top:1.6rem}
-  .btn{background:var(--brand);color:#0b0a12;text-decoration:none;font-weight:800;padding:.8rem 1.4rem;border-radius:12px}
-  .btn.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
-  /* thesis */
+  .btn{background:var(--brand);color:#0b0a12;text-decoration:none;font-weight:800;padding:.8rem 1.4rem;border-radius:12px;transition:transform .12s}
+  .btn:active{transform:scale(.97)} .btn.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .stat{color:var(--dim);font-size:.85rem;margin-top:1.4rem}
+  .stat b{color:var(--ink)}
   .thesis{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:1.8rem;margin:2rem 0;text-align:center}
   .thesis b{color:var(--brand)}
-  /* tools */
-  h2{font-size:1.7rem;text-align:center;margin:3rem 0 .4rem}
+  h2{font-size:1.8rem;text-align:center;margin:3rem 0 .3rem}
   .sub{color:var(--dim);text-align:center;margin-bottom:1.4rem}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
-  .tool{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.2rem}
+  .previews{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  @media(max-width:640px){.previews{grid-template-columns:1fr}}
+  .frame{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .frame .cap{display:flex;align-items:center;gap:.5rem;padding:.6rem .9rem;border-bottom:1px solid var(--line);font-weight:700;font-size:.9rem}
+  .frame .cap a{margin-left:auto;font-size:.8rem}
+  .frame iframe{width:100%;height:360px;border:0;background:#0d0c14;display:block}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1rem}
+  .tool{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.2rem;display:flex;flex-direction:column}
   .tool .ic{font-size:1.6rem} .tool h3{margin:.5rem 0 .3rem;font-size:1.05rem}
-  .tool p{color:var(--dim);font-size:.9rem;margin:.3rem 0}
-  .tool .vs{color:var(--brand);font-size:.78rem;font-weight:700;margin-top:.5rem}
-  /* start */
+  .tool p{color:var(--dim);font-size:.9rem;margin:.3rem 0;flex:1}
+  .tool .vs{color:var(--brand);font-size:.78rem;font-weight:700;margin:.5rem 0}
+  .tool .try{margin-top:.4rem;background:#1f1a30;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:700;font-size:.85rem;text-align:center;padding:.5rem;border-radius:10px}
+  .tool .try:hover{border-color:var(--brand)}
   .paths{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem}
   @media(max-width:560px){.paths{grid-template-columns:1fr}}
   .path{background:linear-gradient(160deg,#1c1730,#15131f);border:1px solid var(--line);border-radius:18px;padding:1.4rem}
-  .path h3{margin:.2rem 0} .path ul{color:var(--dim);padding-left:1.1rem;margin:.6rem 0}
-  /* footer */
+  .path ul{color:var(--dim);padding-left:1.1rem;margin:.6rem 0}
   footer{border-top:1px solid var(--line);margin-top:3rem;padding:2rem 1rem;text-align:center;color:var(--dim);font-size:.85rem}
-  .made{margin-top:.6rem;font-size:.8rem}
 </style>
 </head>
 <body>
 
 <div class="hero">
-  <div class="kick">Free · Open Source · Local-First</div>
+  <div class="kick">Free · Open Source · Local-First · Live now</div>
   <h1>AI here to pay artists. Not replace them.</h1>
   <p class="lede">Free, open tools that give grassroots music venues and independent artists the
   infrastructure big tech charges rent for. No cut. No middleman. No data grab.</p>
   <div class="ctas">
-    <a class="btn" href="https://github.com/donn-duinn/free-music-stack">Get it on GitHub →</a>
-    <a class="btn alt" href="https://openmic.techduinn.dpdns.org">See openmic live</a>
+    <a class="btn" href="#tools">Try the tools live ↓</a>
+    <a class="btn alt" href="https://github.com/donn-duinn/free-music-stack">Get it on GitHub</a>
   </div>
+  <div class="stat"><b>10 tools</b> · built in a day · MIT-licensed · yours to run</div>
 </div>
 
 <div class="wrap">
   <div class="thesis">
     Artists are told to fear AI — trained on their work, flooding the platforms, taking the jobs.
-    Big tech points AI at artists to <b>extract</b> from them. <br>
+    Big tech points AI at artists to <b>extract</b> from them.<br>
     <b>We point AI at big tech to give it back.</b> Every tool here was built by AI, fast, by one
     self-taught musician — and every one routes <b>100% of the money to the artist or venue</b>, and takes nothing.
   </div>
 
-  <h2>The tools</h2>
-  <div class="sub">Everything a venue and an artist need — free forever.</div>
-  <div class="grid" id="tools"></div>
+  <h2>See it working</h2>
+  <div class="sub">Real, live product — not mockups.</div>
+  <div class="previews">
+    <div class="frame"><div class="cap">🌐 Venue site <a href="venue-site/">open →</a></div><iframe src="venue-site/" loading="lazy" title="venue site"></iframe></div>
+    <div class="frame"><div class="cap">💜 Artist hub <a href="artist-hub/">open →</a></div><iframe src="artist-hub/" loading="lazy" title="artist hub"></iframe></div>
+    <div class="frame"><div class="cap">📅 What's On <a href="whats-on/">open →</a></div><iframe src="whats-on/" loading="lazy" title="whats on"></iframe></div>
+    <div class="frame"><div class="cap">🎵 Music player <a href="music-player/">open →</a></div><iframe src="music-player/" loading="lazy" title="music player"></iframe></div>
+  </div>
+
+  <h2 id="tools">The tools — try each one live</h2>
+  <div class="sub">Everything a venue and an artist need. Free forever. Click to try.</div>
+  <div class="grid" id="toolgrid"></div>
 
   <h2>Start free in minutes</h2>
   <div class="sub">Pick your path.</div>
   <div class="paths">
     <div class="path">
       <h3>🍺 I run a venue</h3>
-      <ul>
-        <li>Get a free site with your menus + gig nights</li>
-        <li>Sell tickets fee-free, run a loyalty card</li>
-        <li>Host local artists' art on your walls</li>
-        <li>Describe your pub → AI builds your site in 30s</li>
-      </ul>
+      <ul><li>Free site with your menus + gig nights</li><li>Sell tickets fee-free, run a loyalty card</li>
+        <li>Host local artists' art on your walls</li><li>Describe your pub → AI builds your site in 30s</li></ul>
       <a class="btn" href="https://github.com/donn-duinn/free-music-stack#the-tools">Set up your venue →</a>
     </div>
     <div class="path">
       <h3>🎤 I'm an artist</h3>
-      <ul>
-        <li>Sign up to play open mics, no inbox scramble</li>
-        <li>Your own hub: music, tips, merch, mailing list</li>
-        <li>Sell music + merch direct — keep 100%</li>
-        <li>Own your audience, not the algorithm</li>
-      </ul>
+      <ul><li>Sign up to play open mics, no inbox scramble</li><li>Your hub: music, tips, merch, mailing list</li>
+        <li>Sell music + merch direct — keep 100%</li><li>Own your audience, not the algorithm</li></ul>
       <a class="btn" href="https://github.com/donn-duinn/free-music-stack#the-tools">Build your hub →</a>
     </div>
   </div>
 </div>
 
 <footer>
-  <div>Open source (MIT) · <a href="https://github.com/donn-duinn/free-music-stack">github.com/donn-duinn/free-music-stack</a> · Take it, run it, improve it — it's yours.</div>
-  <div class="made">Made in Preston, Melbourne, by a self-taught musician. AI here to pay artists, not replace them. 🤝</div>
+  Open source (MIT) · <a href="https://github.com/donn-duinn/free-music-stack">github.com/donn-duinn/free-music-stack</a> · Take it, run it, improve it — it's yours.<br>
+  <span style="font-size:.8rem">Made in Preston, Melbourne, by a self-taught musician. AI here to pay artists, not replace them. 🤝</span>
 </footer>
 
 <script>
 const TOOLS = [
-  ["🎤","openmic","Free open-mic / gig sign-up. No booking chaos.","vs sign-up chaos"],
-  ["🌐","Venue site + menus","One-page venue site: gigs, drinks & food, contact.","vs Squarespace $30/mo"],
-  ["🖼️","Local art wall","Buy the art off the venue's walls — direct to the artist.","vs Etsy's cut"],
-  ["🎟️","Fee-free ticketing","Signed tickets + door scanner. Money to your own Stripe.","vs Ticketek's 30%"],
-  ["🎽","Merch pipeline","QR at the show, buy merch direct from the artist.","vs Bandcamp/Shopify fees"],
-  ["🎵","Direct music player","Stream, then buy direct. Artist keeps 100%.","vs Spotify's $0.003"],
-  ["💜","Artist hub","Music, tips, merch, mailing list, gigs — own your fans.","vs Linktree/Patreon/Meta"],
-  ["🎟️","Loyalty card","On the customer's phone. Zero data collected.","vs Square/Toast rent"],
-  ["📅","What's On","Free listing of local open mics + gigs.","vs paywalled guides"],
-  ["🤖","AI onboarding","Describe a venue → deployed site in 30 seconds.","vs manual setup"],
+  ["🎤","openmic","Free open-mic / gig sign-up. No booking chaos.","vs sign-up chaos","https://openmic.techduinn.dpdns.org"],
+  ["🌐","Venue site + menus","One-page venue site: gigs, drinks & food, contact.","vs Squarespace $30/mo","venue-site/"],
+  ["🖼️","Local art wall","Buy the art off the venue's walls — direct to the artist.","vs Etsy's cut","venue-site/#art"],
+  ["🎟️","Fee-free ticketing","Signed tickets + door scanner. Money to your own Stripe.","vs Ticketek's 30%","tickets/"],
+  ["🎽","Merch pipeline","QR at the show, buy merch direct from the artist.","vs Bandcamp fees","artist-merch/"],
+  ["🎵","Direct music player","Stream, then buy direct. Artist keeps 100%.","vs Spotify's $0.003","music-player/"],
+  ["💜","Artist hub","Music, tips, merch, mailing list, gigs — own your fans.","vs Linktree/Patreon","artist-hub/"],
+  ["🎟️","Loyalty card","On the customer's phone. Zero data collected.","vs Square/Toast rent","loyalty/"],
+  ["📅","What's On","Free listing of local open mics + gigs.","vs paywalled guides","whats-on/"],
+  ["🤖","AI onboarding","Describe a venue → deployed site in 30 seconds.","vs manual setup","https://github.com/donn-duinn/free-music-stack/tree/master/scripts"],
 ];
-document.getElementById('tools').innerHTML = TOOLS.map(t=>
-  `<div class="tool"><div class="ic">${t[0]}</div><h3>${t[1]}</h3><p>${t[2]}</p><div class="vs">${t[3]}</div></div>`).join('');
+document.getElementById('toolgrid').innerHTML = TOOLS.map(t=>
+  `<div class="tool"><div class="ic">${t[0]}</div><h3>${t[1]}</h3><p>${t[2]}</p><div class="vs">${t[3]}</div>
+   <a class="try" href="${t[4]}" ${t[4].startsWith('http')?'target="_blank" rel="noopener"':''}>Try it live →</a></div>`).join('');
 </script>
 </body>
 </html>
