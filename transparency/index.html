@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Operating in the open — transparency</title>
+<meta name="description" content="Radical transparency. What we've built, who we've contacted, the real numbers, where money goes, and the mistakes we've owned. Nothing hidden.">
+<meta name="theme-color" content="#7C5CFF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230b0a12'/%3E%3Ctext x='50' y='72' font-size='52' text-anchor='middle'%3E%F0%9F%94%8D%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--violet:#7C5CFF;--bg:#08070e;--card:#141220;--card2:#191529;--line:#282340;--ink:#f3f1fb;--dim:#9c94bd;--good:#3ecf8e;--amber:#f5b83d;--red:#ff6b7d}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;color:var(--ink);
+       background:radial-gradient(900px 600px at 50% -12%,#2c1e58,transparent),var(--bg)}
+  .wrap{max-width:680px;margin:0 auto;padding:2.4rem 1.2rem 3.5rem}
+  .kick{color:var(--violet);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.72rem;text-align:center}
+  h1{font-size:2.1rem;letter-spacing:-.5px;text-align:center;margin:.4rem 0 .3rem}
+  .sub{color:var(--dim);text-align:center;max-width:44ch;margin:.3rem auto 0}
+  h2{font-size:1.15rem;margin:2.2rem 0 .5rem;display:flex;align-items:center;gap:.5rem}
+  .stats{display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;margin:1.4rem 0}
+  .stat{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:.7rem 1.1rem;min-width:96px;text-align:center}
+  .stat b{font-size:1.5rem;display:block;line-height:1.05} .stat span{color:var(--dim);font-size:.72rem}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin:.6rem 0}
+  .row{display:flex;justify-content:space-between;gap:.8rem;padding:.4rem 0;border-bottom:1px solid #1e1b2e;font-size:.95rem}
+  .row:last-child{border-bottom:0}
+  .st{font-size:.68rem;font-weight:800;white-space:nowrap;padding:.1rem .5rem;border-radius:99px}
+  .st.rep{background:#0f2e20;color:var(--good)} .st.sent{background:#3a2c0e;color:var(--amber)} .st.dead{background:#3a1015;color:var(--red)}
+  .money b{color:var(--good)} .fix b{color:var(--amber)}
+  a{color:var(--violet)}
+  .fix .row{align-items:flex-start;flex-direction:column;gap:.15rem}
+  .fix .w{color:var(--red);font-weight:600} .fix .f{color:var(--good);font-size:.9rem}
+  footer{text-align:center;color:var(--dim);font-size:.8rem;margin-top:2.2rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kick">🔍 Nothing hidden</div>
+  <h1>Operating in the open</h1>
+  <p class="sub">What we've built, who we've talked to, the real numbers (even when they're tiny), where money goes, and the mistakes we've made and fixed. If we ever hide something, call us on it.</p>
+
+  <h2>📊 The real numbers <span style="font-size:.7rem;color:var(--dim);font-weight:400">· live from GitHub</span></h2>
+  <div class="stats" id="stats">
+    <div class="stat"><b id="stars">—</b><span>GitHub stars</span></div>
+    <div class="stat"><b id="forks">—</b><span>forks</span></div>
+    <div class="stat"><b id="issues">—</b><span>open issues</span></div>
+    <div class="stat"><b>0</b><span>trackers on the site</span></div>
+  </div>
+  <p style="color:var(--dim);font-size:.9rem;text-align:center">We don't track visitors — no analytics, no cookies, no data harvesting. So we genuinely can't tell you traffic numbers, and we won't pretend to. It's days old. The number that matters right now is who's replying, not who's watching.</p>
+
+  <h2>📣 Who we've contacted</h2>
+  <p style="color:var(--dim);font-size:.9rem;margin:.2rem 0 .6rem">Honest statuses. No overclaiming.</p>
+  <div class="card">
+    <div class="row"><span>Darebin City Council — sourcing a room for a free Preston open mic</span><span class="st rep">replied</span></div>
+    <div class="row"><span>Music Victoria — grant conversation booked</span><span class="st rep">replied</span></div>
+    <div class="row"><span>WA Music (WAM) — sharing it with WA venues</span><span class="st rep">replied</span></div>
+    <div class="row"><span>The Drunken Poet — open-mic venue, listed</span><span class="st rep">replied</span></div>
+    <div class="row"><span>MusicNSW · community radio (Triple R, 3CR, FBi, 4ZZZ)</span><span class="st sent">sent</span></div>
+    <div class="row"><span>Music SA / NT / ACT / QLD · APRA</span><span class="st sent">sent</span></div>
+    <div class="row"><span>MONA / Mona Foma (Tasmania) · Happy Mag · The Brag (Rolling Stone AU)</span><span class="st sent">sent</span></div>
+    <div class="row"><span>Port Phillip · Mr Scarlisle's — bad addresses, retrying</span><span class="st dead">bounced</span></div>
+  </div>
+
+  <h2>💰 Where the money goes</h2>
+  <div class="card money">
+    <p style="margin:.3rem 0"><b>Taken so far: $0.</b> Nothing has been charged for anything, and it never will be to use the tools.</p>
+    <p style="margin:.3rem 0">There's a <b>hard cap</b> on what the founder takes: just enough to live and keep building. <b>Every dollar past that reinvests</b> — hosting, the next free tool, keeping it free for artists and venues. No investors, no shareholders, no cut.</p>
+    <p style="margin:.3rem 0">When funding turns on, it'll be fully visible on <a href="../support/">Open Collective</a> — you'll watch where each dollar lands.</p>
+  </div>
+
+  <h2>🔧 Mistakes we've made (and fixed)</h2>
+  <div class="card fix">
+    <div class="row"><span class="w">Said "built in four days" in the first press pitch and emails.</span><span class="f">✔ It was 48 hours. Corrected on every page. A few sent emails still had it — owned here.</span></div>
+    <div class="row"><span class="w">First MONA email bounced (wrong address).</span><span class="f">✔ Re-sent to a working inbox. Logged.</span></div>
+    <div class="row"><span class="w">Ticket QR was leaking the admit-code to a third-party service.</span><span class="f">✔ Found it in our own red-team pass, fixed it to run offline the same day.</span></div>
+    <div class="row"><span class="w">Machine translations will be rough in places.</span><span class="f">✔ Flagged plainly, native speakers invited to correct them.</span></div>
+  </div>
+
+  <h2>🗺️ Everything else is open too</h2>
+  <div class="card">
+    <p style="margin:.3rem 0">All the code: <a href="https://github.com/donn-duinn/free-music-stack">GitHub</a> (MIT). The roadmap is the <a href="https://github.com/donn-duinn/free-music-stack/issues">open issues</a>. The conversation is in <a href="https://github.com/donn-duinn/free-music-stack/discussions">Discussions</a>. The whole project is on one page: <a href="../project/">Donn's Quest</a>.</p>
+    <p style="margin:.3rem 0">See something we should be more open about? Tell us: <a href="../feedback/">feedback</a> or <a href="mailto:daniel.j.hogben@gmail.com">daniel.j.hogben@gmail.com</a>.</p>
+  </div>
+
+  <footer>⚓ Tech Duinn · we'll make mistakes, and own them — out loud, in public · last honest update: 30 July 2026</footer>
+</div>
+<script>
+fetch('https://api.github.com/repos/donn-duinn/free-music-stack')
+  .then(r=>r.json()).then(d=>{
+    document.getElementById('stars').textContent = d.stargazers_count ?? '—';
+    document.getElementById('forks').textContent = d.forks_count ?? '—';
+    document.getElementById('issues').textContent = d.open_issues_count ?? '—';
+  }).catch(()=>{});
+</script>
+</body>
+</html>
