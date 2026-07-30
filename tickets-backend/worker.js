@@ -73,9 +73,12 @@ export default {
       if (!/^[a-f0-9]{32}$/.test(code)) return json({ ok: false, status: "invalid" });
       const row = await env.DB.prepare("SELECT event,status FROM tickets WHERE code=?").bind(code).first();
       if (!row) return json({ ok: false, status: "invalid" });
-      if (row.status === "used") return json({ ok: false, status: "already_used", event: row.event });
-      await env.DB.prepare("UPDATE tickets SET status='used', used_at=? WHERE code=?").bind(new Date().toISOString(), code).run();
-      return json({ ok: true, status: "admitted", event: row.event });
+      // Atomic claim: only the scan that flips valid->used wins. Two doors racing the
+      // same code can't both succeed — the conditional WHERE lets exactly one update land.
+      const upd = await env.DB.prepare("UPDATE tickets SET status='used', used_at=? WHERE code=? AND status='valid'")
+        .bind(new Date().toISOString(), code).run();
+      if (upd.meta.changes === 1) return json({ ok: true, status: "admitted", event: row.event });
+      return json({ ok: false, status: "already_used", event: row.event });
     }
 
     // ── door scanner page (staff) ──
