@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Donn's Quest to Save Live Music</title>
+<meta name="description" content="A movement to take live music back from big tech. Free open-source tools, a charter, and a growing crew. This can't be done by one — join the quest.">
+<meta name="theme-color" content="#7C5CFF">
+<meta property="og:title" content="Donn's Quest to Save Live Music">
+<meta property="og:description" content="A movement to take live music back from big tech. Free tools, given away. This can't be done by one — join us.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230b0a12'/%3E%3Ctext x='50' y='70' font-size='54' text-anchor='middle'%3E%E2%9A%93%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--violet:#7C5CFF;--bg:#08070e;--card:#141220;--card2:#191529;--line:#282340;--ink:#f3f1fb;--dim:#9c94bd;--good:#3ecf8e;--amber:#f5b83d}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font:16px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;color:var(--ink);
+       background:radial-gradient(1000px 640px at 50% -14%,#2c1e58,transparent),var(--bg);overflow-x:hidden}
+  .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:50;background:linear-gradient(90deg,var(--violet),var(--good));box-shadow:0 0 12px var(--violet)}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 1.1rem}
+  a{color:var(--violet)}
+  header{text-align:center;padding:3.2rem 1.1rem 1.4rem;max-width:780px;margin:0 auto}
+  .kick{color:var(--violet);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.74rem}
+  h1{font-size:clamp(2.1rem,6vw,3rem);line-height:1.1;letter-spacing:-1px;margin:.6rem 0 .5rem}
+  h1 .g{background:linear-gradient(90deg,#8b6dff,#3ecf8e);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{color:var(--dim);font-size:1.15rem;max-width:52ch;margin:.6rem auto 0}
+  .stats{display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;margin:1.6rem 0}
+  .stat{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:.7rem 1.1rem;min-width:110px}
+  .stat b{font-size:1.6rem;display:block;line-height:1.05} .stat.g b{color:var(--good)} .stat.a b{color:var(--amber)}
+  .stat span{color:var(--dim);font-size:.74rem}
+  h2{font-size:clamp(1.4rem,4vw,1.8rem);letter-spacing:-.3px;margin:2.8rem 0 .3rem;text-align:center}
+  .h2sub{color:var(--dim);text-align:center;margin-bottom:1.3rem}
+  .story{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-left:3px solid var(--violet);
+         border-radius:0 16px 16px 0;padding:1.3rem 1.5rem;font-size:1.05rem}
+  .story p{margin:.6rem 0} .story a{font-weight:700}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:.9rem}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:1.1rem;text-decoration:none;color:var(--ink);
+        display:flex;flex-direction:column;transition:transform .18s,border-color .18s,box-shadow .18s;position:relative}
+  .card:hover{transform:translateY(-4px);border-color:var(--violet);box-shadow:0 14px 40px #0007}
+  .card .ic{font-size:1.6rem} .card h3{margin:.5rem 0 .2rem;font-size:1.05rem}
+  .card p{color:var(--dim);font-size:.86rem;margin:.2rem 0;flex:1}
+  .card .go{color:var(--violet);font-size:.8rem;font-weight:700;margin-top:.6rem}
+  .card .pill{position:absolute;top:.8rem;right:.8rem;font-size:.6rem;font-weight:800;padding:.1rem .45rem;border-radius:99px;background:#241a45;color:var(--violet)}
+  .timeline{max-width:640px;margin:0 auto}
+  .tl{display:flex;gap:1rem;padding:.5rem 0}
+  .tl .when{color:var(--violet);font-weight:800;min-width:92px;font-size:.9rem}
+  .tl .what{color:var(--ink);font-size:.95rem} .tl .what span{color:var(--dim);font-size:.85rem;display:block}
+  .board{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.7rem}
+  .brow{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.7rem .9rem}
+  .brow b{display:block} .brow span{color:var(--dim);font-size:.8rem}
+  .brow .st{font-size:.68rem;font-weight:800;color:var(--good)}
+  .cta{text-align:center;background:linear-gradient(160deg,#1a1430,#120f1f);border:1px solid var(--line);border-radius:20px;padding:2.2rem 1.2rem;margin:3rem 0 1rem}
+  .btnrow{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-top:1rem}
+  .btn{text-decoration:none;border-radius:12px;padding:.8rem 1.3rem;font-weight:800}
+  .btn.p{background:var(--violet);color:#fff} .btn.g{background:var(--card);border:1px solid var(--line);color:var(--ink)}
+  footer{text-align:center;color:var(--dim);font-size:.82rem;padding:2rem 1rem 3rem}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header>
+  <div class="kick">⚓ A movement, not one man · gonzo engineering</div>
+  <h1>Donn's Quest to<br><span class="g">Save Live Music</span></h1>
+  <p class="lede">Priced out of the music he loved, a self-taught musician set out to take it back from big tech. No pitch decks. No promises. Just build it fast, ship it live, and give it away. This is the proof you can click, and this can't be done by one. Join the quest.</p>
+  <div class="stats">
+    <div class="stat g"><b>48 hrs</b><span>idea to live</span></div>
+    <div class="stat"><b>12+</b><span>free tools & pages</span></div>
+    <div class="stat a"><b>18</b><span>orgs contacted</span></div>
+    <div class="stat g"><b>$0</b><span>cost, forever</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <h2>The story</h2>
+  <div class="story">
+    <p>Daniel (donn), 28, got priced out of the one thing that kept him going: live music, the pub, the open mic. So on a Tuesday night he started building the opposite of what everyone said AI would do to artists. Forty-eight hours later, it was live and given away for free.</p>
+    <p>He's not the most skilled person for the job, and he'll be the first to say so. He noticed a gap, stood up, and asked for help. <a href="../why/">Read the whole why, in his words →</a></p>
+  </div>
+
+  <h2>Everything we built</h2>
+  <div class="h2sub">All free, all open source, all live right now.</div>
+  <div class="grid">
+    <a class="card" href="../start/"><div class="ic">🧭</div><h3>The one-stop shop</h3><p>Every tool, sorted by whether you're an artist, a venue or a fan.</p><div class="go">Open →</div></a>
+    <a class="card" href="../venue-site/"><div class="ic">🌐</div><h3>Venue sites</h3><p>Gigs, menus, drink lists, a local art wall. Free, no Squarespace fee.</p><div class="go">Open →</div></a>
+    <a class="card" href="../tickets/"><div class="ic">🎟️</div><h3>Fee-free ticketing</h3><p>No Ticketek cut. The door money is the venue's.</p><div class="go">Open →</div></a>
+    <a class="card" href="../music-player/"><div class="ic">🎵</div><h3>Music player</h3><p>Stream and sell direct. Artists keep 100%.</p><div class="go">Open →</div></a>
+    <a class="card" href="../artist-hub/"><div class="ic">🔗</div><h3>Artist hub</h3><p>Own your audience. Music, merch, tips, mailing list, gigs.</p><div class="go">Open →</div></a>
+    <a class="card" href="../artist-merch/"><div class="ic">🎽</div><h3>Merch, direct</h3><p>Sell merch with no middleman cut.</p><div class="go">Open →</div></a>
+    <a class="card" href="../loyalty/"><div class="ic">⭐</div><h3>Loyalty card</h3><p>A stamp card on the phone. Zero data harvesting.</p><div class="go">Open →</div></a>
+    <a class="card" href="../calendar/"><div class="ic">📅</div><h3>What's-on calendar</h3><p>Find nights near you, save them to your phone, add your own.</p><div class="go">Open →</div></a>
+    <a class="card" href="https://openmic.techduinn.dpdns.org"><div class="ic">✍️</div><h3>Open-mic sign-up</h3><p>QR on the wall, run the night, split tips fairly.</p><div class="go">Open →</div></a>
+    <a class="card" href="../why/"><span class="pill">story</span><div class="ic">✊</div><h3>Why we built it</h3><p>The manifesto, in his own words. Signed.</p><div class="go">Open →</div></a>
+    <a class="card" href="../petition/"><span class="pill">sign</span><div class="ic">📜</div><h3>The charter</h3><p>Money to venues & artists first. Put your name on it.</p><div class="go">Open →</div></a>
+    <a class="card" href="../help/"><span class="pill">care</span><div class="ic">💚</div><h3>Help & support</h3><p>Crisis lines, men's health, mental health, drugs, gambling.</p><div class="go">Open →</div></a>
+    <a class="card" href="../press/"><div class="ic">📰</div><h3>Press kit</h3><p>The story, facts and quotes for media.</p><div class="go">Open →</div></a>
+    <a class="card" href="../support/"><div class="ic">🤝</div><h3>Keep it free</h3><p>Pay us to exist, not to use. How the work stays free.</p><div class="go">Open →</div></a>
+    <a class="card" href="../feedback/"><div class="ic">💬</div><h3>Feedback</h3><p>Tell us what worked and what didn't.</p><div class="go">Open →</div></a>
+    <a class="card" href="https://github.com/donn-duinn/free-music-stack"><div class="ic">⌨️</div><h3>The code</h3><p>All open source, MIT. Take it, fork it, run it.</p><div class="go">Open →</div></a>
+  </div>
+
+  <h2>How fast it moved</h2>
+  <div class="timeline">
+    <div class="tl"><div class="when">Tue night</div><div class="what">The idea<span>Priced out, sick of "AI will replace artists". Started building the opposite.</span></div></div>
+    <div class="tl"><div class="when">+48 hrs</div><div class="what">Live<span>The full stack, a charter, a manifesto, a calendar and a help line, all public.</span></div></div>
+    <div class="tl"><div class="when">Same days</div><div class="what">Australia-wide outreach<span>Councils, state music bodies, community radio and press contacted across the country.</span></div></div>
+    <div class="tl"><div class="when">Now</div><div class="what">Replies landing<span>A council sourcing a room, a state body sharing venues, venues signing on.</span></div></div>
+  </div>
+
+  <h2>Who's already on board</h2>
+  <div class="h2sub">Honest and early. Reached out to 18 organisations in the first days.</div>
+  <div class="board">
+    <div class="brow"><b>Darebin Council</b><span>Sourcing a room for a free Preston open mic</span><span class="st">replied</span></div>
+    <div class="brow"><b>Music Victoria</b><span>Grant conversation booked</span><span class="st">replied</span></div>
+    <div class="brow"><b>WA Music (WAM)</b><span>Sharing it with WA venues</span><span class="st">replied</span></div>
+    <div class="brow"><b>The Drunken Poet</b><span>Open-mic venue, listed</span><span class="st">replied</span></div>
+    <div class="brow"><b>Community radio</b><span>Triple R, 3CR, FBi, 4ZZZ — nationwide</span><span class="st">contacted</span></div>
+    <div class="brow"><b>State music bodies</b><span>NSW, QLD, SA, NT, ACT</span><span class="st">contacted</span></div>
+    <div class="brow"><b>MONA (Tasmania)</b><span>Seeding live music down south</span><span class="st">contacted</span></div>
+    <div class="brow"><b>Press</b><span>Music media pitched the story</span><span class="st">contacted</span></div>
+  </div>
+
+  <div class="cta">
+    <div class="kick">It's yours now</div>
+    <h2 style="margin:.3rem 0">Take it. Sign it. Or help build it.</h2>
+    <p style="color:var(--dim);max-width:44ch;margin:.4rem auto 0">He said it plainly: he'll get things wrong, and he needs help. If you can build a piece he can't, come and make it work.</p>
+    <div class="btnrow">
+      <a class="btn p" href="../petition/">📜 Sign the charter</a>
+      <a class="btn g" href="../start/">🧭 Use the tools</a>
+      <a class="btn g" href="https://github.com/donn-duinn/free-music-stack">⌨️ Help build it</a>
+    </div>
+  </div>
+
+</div>
+<footer>⚓ Tech Duinn · House of Donn · an anchor in the noise · built by one guy with AI · free forever</footer>
+<script>addEventListener('scroll',()=>{const h=document.documentElement,m=h.scrollHeight-h.clientHeight;document.getElementById('progress').style.width=(m>0?h.scrollTop/m*100:0)+'%';},{passive:true});</script>
+</body>
+</html>

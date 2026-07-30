@@ -67,13 +67,43 @@
   .closing{text-align:center;background:linear-gradient(160deg,#221541,#140f22);border:1px solid var(--line);border-radius:22px;padding:2.4rem 1.5rem;margin:3.5rem 0}
   .closing h2{margin-top:0}
   footer{border-top:1px solid var(--line);padding:2rem 1rem;text-align:center;color:var(--dim);font-size:.85rem}
+  footer a{color:var(--dim)} footer a:hover{color:var(--brand)}
+  /* ── polish pass ── */
+  .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:50;border-radius:0 3px 3px 0;
+    background:linear-gradient(90deg,var(--brand),var(--brand2),var(--brand3));box-shadow:0 0 12px var(--brand)}
+  .hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(340px 200px at 18% 28%,#ff5c8a1f,transparent 60%),radial-gradient(340px 200px at 82% 42%,#8b5cf61f,transparent 60%);
+    animation:drift 16s ease-in-out infinite alternate}
+  @keyframes drift{to{transform:translate3d(0,-16px,0) scale(1.06)}}
+  /* gradient-border glow on cards */
+  .tool::before{content:"";position:absolute;inset:0;border-radius:16px;padding:1px;z-index:0;opacity:0;pointer-events:none;
+    background:linear-gradient(130deg,var(--brand),var(--brand2),var(--brand3));
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;transition:opacity .3s}
+  .tool:hover::before{opacity:.85}
+  .tool>*{position:relative;z-index:1}
+  /* button sheen sweep */
+  .btn{position:relative;overflow:hidden}
+  .btn::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;transform:skewX(-20deg);
+    background:linear-gradient(90deg,transparent,#ffffff4d,transparent);transition:left .55s ease}
+  .btn:hover::after{left:130%}
+  /* frames get a soft glow on hover */
+  .frame:hover{box-shadow:0 16px 50px #0008,0 0 0 1px #ffffff14}
+  :focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:6px}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
 
+<div class="progress" id="progress"></div>
+<script>addEventListener('scroll',()=>{const h=document.documentElement,m=h.scrollHeight-h.clientHeight;document.getElementById('progress').style.width=(m>0?h.scrollTop/m*100:0)+'%';},{passive:true});</script>
 <nav><div class="in">
   <span class="logo">🎸 Free Music <span>Stack</span></span>
-  <a class="gh" href="https://github.com/donn-duinn/free-music-stack">★ Star on GitHub</a>
+  <span style="display:flex;gap:.9rem;align-items:center;flex-wrap:wrap">
+    <a href="why/" style="color:var(--dim);text-decoration:none;font-size:.9rem">Why</a>
+    <a href="calendar/" style="color:var(--dim);text-decoration:none;font-size:.9rem">What's on</a>
+    <a href="petition/" style="color:var(--dim);text-decoration:none;font-size:.9rem">Charter</a>
+    <a class="gh" href="https://github.com/donn-duinn/free-music-stack">★ Star</a>
+  </span>
 </div></nav>
 
 <header class="hero">
@@ -142,8 +172,18 @@
 </div>
 
 <footer>
+  <div style="display:flex;gap:.4rem 1.1rem;flex-wrap:wrap;justify-content:center;margin-bottom:1rem;font-size:.92rem">
+    <a href="start/">🧭 One-stop shop</a>
+    <a href="why/">✊ Why we built this</a>
+    <a href="calendar/">📅 What's on</a>
+    <a href="petition/">📜 Sign the charter</a>
+    <a href="press/">📰 Press</a>
+    <a href="help/">💚 Help &amp; support</a>
+    <a href="support/">🤝 Keep it free</a>
+    <a href="feedback/">💬 Feedback</a>
+  </div>
   Open source (MIT) · <a href="https://github.com/donn-duinn/free-music-stack">github.com/donn-duinn/free-music-stack</a> · Take it, run it, improve it — it's yours.<br>
-  <span style="font-size:.8rem">Made in Preston, Melbourne, by a self-taught musician. AI here to pay artists, not replace them. 🤝</span>
+  <span style="font-size:.8rem">Made in Preston, Melbourne, by a self-taught, self-directed musician. Built in 48 hours with AI. AI here to pay artists, not replace them. 🤝</span>
 </footer>
 
 <script>
