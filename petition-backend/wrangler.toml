@@ -1,0 +1,10 @@
+name = "petition"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+# Create the DB once:  wrangler d1 create petition
+# then paste the returned database_id below.
+[[d1_databases]]
+binding = "DB"
+database_name = "petition"
+database_id = "PASTE_YOUR_D1_ID_HERE"

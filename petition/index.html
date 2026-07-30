@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Music to the venues and artists first — sign the charter</title>
+<meta name="description" content="A charter to make it standard: the money from live music goes to the venues and artists who make it, first. Free open tools, no compulsory middleman. Add your name.">
+<meta name="theme-color" content="#7C5CFF">
+<meta property="og:title" content="Music to the venues and artists first">
+<meta property="og:description" content="Make it the standard. The money goes to the people who make the music. Sign the charter.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230b0a12'/%3E%3Ctext x='50' y='70' font-size='54' text-anchor='middle'%3E%E2%9C%8A%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--violet:#7C5CFF;--bg:#08070e;--card:#141220;--line:#282340;--ink:#f3f1fb;--dim:#9c94bd;--good:#3ecf8e}
+  *{box-sizing:border-box}
+  body{margin:0;font:17px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;color:var(--ink);
+       background:radial-gradient(900px 600px at 50% -12%,#2a1d55,transparent),var(--bg)}
+  .wrap{max-width:680px;margin:0 auto;padding:2.6rem 1.3rem 4rem}
+  .kick{color:var(--violet);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.74rem;text-align:center}
+  h1{font-size:2.2rem;line-height:1.15;letter-spacing:-.6px;text-align:center;margin:.5rem 0 .4rem}
+  .lede{color:var(--dim);text-align:center;max-width:44ch;margin:.4rem auto 0;font-size:1.02rem}
+  .count{text-align:center;margin:1.6rem auto;background:var(--card);border:1px solid var(--line);border-radius:16px;
+         padding:1rem;max-width:320px}
+  .count b{font-size:2rem;color:var(--good);display:block}
+  .count span{color:var(--dim);font-size:.85rem}
+  h2{font-size:1.15rem;margin:2.2rem 0 .6rem;letter-spacing:-.2px}
+  .why{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--violet);border-radius:14px;
+       padding:1.1rem 1.3rem;margin:1rem 0;font-size:1rem}
+  .why p{margin:.5rem 0} .sig{color:var(--violet);font-style:italic;margin-top:.7rem}
+  .charter{counter-reset:c;list-style:none;padding:0;margin:1rem 0}
+  .charter li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem .9rem 3rem;
+              position:relative;margin:.55rem 0}
+  .charter li::before{counter-increment:c;content:counter(c);position:absolute;left:.9rem;top:.9rem;width:1.5rem;height:1.5rem;
+    background:var(--violet);color:#fff;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.85rem}
+  .charter b{color:var(--violet)}
+  .prob{display:grid;gap:.5rem;margin:1rem 0}
+  .prob div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem}
+  .prob b{color:#ff6b7d}
+  .statement{background:#0f1d18;border:1px solid #1f3d31;border-radius:14px;padding:1.1rem 1.3rem;margin:1.2rem 0;font-size:1rem}
+  form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.2rem;margin-top:1rem}
+  label{display:block;font-size:.82rem;color:var(--dim);margin:.6rem 0 .25rem}
+  input,textarea{width:100%;background:#0c0b16;border:1px solid var(--line);border-radius:10px;padding:.7rem;color:var(--ink);font:inherit}
+  textarea{min-height:70px;resize:vertical}
+  button{width:100%;margin-top:1rem;background:var(--violet);color:#fff;border:0;border-radius:12px;padding:.9rem;
+         font-weight:800;font-size:1.05rem;cursor:pointer}
+  button:hover{filter:brightness(1.1)}
+  .share{display:flex;gap:.5rem;justify-content:center;margin-top:1.4rem;flex-wrap:wrap}
+  .share button{width:auto;background:var(--card);border:1px solid var(--line);color:var(--ink);font-size:.9rem;padding:.6rem 1.1rem;margin:0}
+  .ok{color:var(--good);text-align:center;font-weight:700;margin-top:1rem;display:none}
+  footer{text-align:center;color:var(--dim);font-size:.82rem;margin-top:2.4rem}
+  footer a{color:var(--violet)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kick">✊ A charter for live music</div>
+  <h1>Music money goes to the venues and artists first.</h1>
+  <p class="lede">Not to the ticketing giants. Not to the streaming platforms. To the people who make the music and the rooms that host it. Let's make it the standard.</p>
+
+  <div class="count"><b id="count">—</b><span>people have signed so far</span></div>
+
+  <h2>Why this matters to me</h2>
+  <div class="why">
+    <p>I'm 28. I got in trouble as a kid, mostly out of boredom. Nothing on, nowhere to be. Music is what pulled me out.</p>
+    <p>A pub with a gig on is not a luxury. It's safety infrastructure. A room with music has eyes on the street, someone's always awake, and active streets keep trouble away. Nightlife is the release valve that lets the working week stay sane, and the community it grows looks after its own.</p>
+    <p>But survival is economic. Costs to run events keep climbing, and the fees big tech charges bleed these rooms dry. If we lose nightlife, we lose the youth. We lose the one place that gives a bored kid somewhere to go instead of the streets.</p>
+    <p>So I built free, open tools for pubs and musicians, and I gave them away. Because the cost is the thing killing the rooms. I want people to live better than I did.</p>
+    <p class="sig">From the youth that has seen a lot in his days.</p>
+  </div>
+
+  <h2>What's broken</h2>
+  <div class="prob">
+    <div>Ticket giants can take <b>as much as 20 to 30%+</b> in booking fees on every ticket to a local gig.</div>
+    <div>Streaming pays artists <b>fractions of a cent</b> per play. You need a million streams to make rent.</div>
+    <div>Grassroots venues pay <b>monthly rent to big platforms</b> just to have a website and sell a ticket.</div>
+    <div>The people who make and host the music are the <b>last</b> to get paid, not the first.</div>
+  </div>
+
+  <h2>The charter — make this the standard</h2>
+  <ol class="charter">
+    <li><b>Artists and venues get paid first.</b> The money from a gig goes to the people who made it and hosted it, before any platform takes a cut.</li>
+    <li><b>No compulsory middleman fees</b> on grassroots live music. If a venue wants to sell a ticket, it shouldn't have to hand a giant a slice to do it.</li>
+    <li><b>Free, open tools for everyone.</b> Websites, ticketing, sign-ups and sales that any venue or artist can run themselves, at no cost, owning their own data.</li>
+    <li><b>Public money for live music backs venues and artists directly</b> — especially in the areas that have no live music at all.</li>
+  </ol>
+
+  <div class="statement">
+    <b>We, the undersigned</b>, call on venues, councils, arts bodies and government to adopt this charter as the standard for live music: that the money, the tools and the support go to the artists and venues first. We back free and open infrastructure so that no grassroots room is priced out of existence, and no community loses its nightlife to fees it was never meant to pay.
+  </div>
+
+  <h2>Add your name</h2>
+  <form id="f">
+    <label for="name">Your name *</label>
+    <input id="name" maxlength="80" required placeholder="Name or stage name">
+    <label for="place">Suburb / town</label>
+    <input id="place" maxlength="80" placeholder="e.g. Preston, VIC">
+    <label for="msg">Why you're signing (optional)</label>
+    <textarea id="msg" maxlength="280" placeholder="What live music means to you..."></textarea>
+    <button type="submit">✊ Sign the charter</button>
+    <div class="ok" id="ok">Thank you. Your name's on it. Now share it.</div>
+  </form>
+
+  <div class="share">
+    <button onclick="copyLink()">🔗 Copy link to share</button>
+    <button onclick="window.open('https://donn-duinn.github.io/free-music-stack/','_blank')">🎸 See the free tools</button>
+  </div>
+
+  <footer>
+    ⚓ Tech Duinn · House of Donn · the tools are free forever at
+    <a href="https://donn-duinn.github.io/free-music-stack/">free-music-stack</a>
+  </footer>
+</div>
+
+<script>
+// ── CONFIG: after you deploy petition-backend, put its URL here to collect signatures live.
+// Until then, signing opens a pre-filled email to add your name (works today, no backend needed).
+const BACKEND = ""; // e.g. "https://petition.your-worker.workers.dev"
+const SIGN_EMAIL = "donn-duinn@agentmail.to";
+
+const $=id=>document.getElementById(id);
+async function refreshCount(){
+  if(!BACKEND){ $('count').textContent='✊'; return; }
+  try{ const d=await (await fetch(BACKEND+'/count')).json(); $('count').textContent=(d.count||0).toLocaleString(); }
+  catch(e){ $('count').textContent='✊'; }
+}
+refreshCount();
+
+$('f').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const name=$('name').value.trim(); if(!name) return;
+  const place=$('place').value.trim(), msg=$('msg').value.trim();
+  if(BACKEND){
+    try{
+      await fetch(BACKEND+'/sign',{method:'POST',headers:{'content-type':'application/json'},
+        body:JSON.stringify({name,place,msg})});
+      $('ok').style.display='block'; $('f').reset(); refreshCount(); return;
+    }catch(e){ /* fall through to email */ }
+  }
+  // fallback: pre-filled email (works with no backend)
+  const body=`I'm signing the live-music charter.%0D%0A%0D%0AName: ${encodeURIComponent(name)}%0D%0ASuburb: ${encodeURIComponent(place)}%0D%0AWhy: ${encodeURIComponent(msg)}`;
+  window.location.href=`mailto:${SIGN_EMAIL}?subject=${encodeURIComponent('Charter signature: '+name)}&body=${body}`;
+  $('ok').style.display='block';
+});
+
+function copyLink(){
+  navigator.clipboard.writeText(location.href).then(()=>{
+    const b=event.target; const t=b.textContent; b.textContent='✓ Copied'; setTimeout(()=>b.textContent=t,1500);
+  });
+}
+</script>
+</body>
+</html>
