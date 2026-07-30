@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Plan — Donn's Quest to Save Live Music</title>
+<meta name="description" content="Not a pitch. It's already running. The plan to take live music back from big tech: built in 48 hours, given away free, and the path from here. You can't ignore what's already live.">
+<meta name="theme-color" content="#7C5CFF">
+<meta property="og:title" content="The Plan — already running, not a pitch">
+<meta property="og:description" content="Built in 48 hours, given away free. Here's the whole plan to ungate culture. Proof over promises.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230b0a12'/%3E%3Ctext x='50' y='72' font-size='52' text-anchor='middle'%3E%E2%9A%93%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--violet:#7C5CFF;--bg:#08070e;--card:#141220;--card2:#191529;--line:#282340;--ink:#f3f1fb;--dim:#9c94bd;--good:#3ecf8e;--amber:#f5b83d}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;color:var(--ink);
+       background:radial-gradient(1100px 700px at 50% -14%,#2c1e58,transparent),var(--bg);overflow-x:hidden}
+  .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:50;background:linear-gradient(90deg,var(--violet),var(--good));box-shadow:0 0 12px var(--violet)}
+  .wrap{max-width:760px;margin:0 auto;padding:0 1.2rem}
+  header{text-align:center;padding:3.4rem 1.2rem 1rem;max-width:800px;margin:0 auto}
+  .kick{color:var(--violet);font-weight:800;letter-spacing:2px;text-transform:uppercase;font-size:.74rem}
+  h1{font-size:clamp(2.4rem,8vw,3.8rem);line-height:1.05;letter-spacing:-1.5px;margin:.5rem 0 .3rem;font-weight:850}
+  h1 .g{background:linear-gradient(90deg,#8b6dff,#3ecf8e);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--ink);font-size:1.3rem;max-width:30ch;margin:1rem auto 0;font-weight:600}
+  .lead b{color:var(--violet)}
+  .receipts{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin:1.8rem 0 .5rem}
+  .r{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:14px;padding:.65rem 1rem;min-width:96px}
+  .r b{font-size:1.5rem;display:block;line-height:1} .r.g b{color:var(--good)} .r.a b{color:var(--amber)}
+  .r span{color:var(--dim);font-size:.72rem}
+  .stamp{text-align:center;margin:1rem 0 0}
+  .stamp span{display:inline-block;border:2px solid var(--good);color:var(--good);border-radius:10px;padding:.4rem .9rem;
+    font-weight:800;letter-spacing:1px;transform:rotate(-2deg);font-size:.9rem}
+  h2{font-size:clamp(1.5rem,5vw,2rem);letter-spacing:-.4px;margin:3rem 0 .3rem;text-align:center}
+  .h2sub{color:var(--dim);text-align:center;margin-bottom:1.4rem;max-width:44ch;margin-left:auto;margin-right:auto}
+  .phase{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.2rem 1.3rem;margin:.8rem 0;position:relative;
+         border-left:3px solid var(--line)}
+  .phase.done{border-left-color:var(--good)} .phase.now{border-left-color:var(--amber)} .phase.next{border-left-color:var(--violet)}
+  .phase .tag{font-size:.64rem;font-weight:800;letter-spacing:1px;padding:.15rem .55rem;border-radius:99px;position:absolute;top:1.1rem;right:1.1rem}
+  .phase.done .tag{background:#0f2e20;color:var(--good)} .phase.now .tag{background:#3a2c0e;color:var(--amber)} .phase.next .tag{background:#241a45;color:var(--violet)}
+  .phase h3{margin:.1rem 0 .4rem;font-size:1.2rem;padding-right:5rem}
+  .phase p{margin:.3rem 0;color:var(--dim);font-size:.95rem} .phase p b{color:var(--ink)}
+  .thesis{background:linear-gradient(160deg,#1a1430,#120f1f);border:1px solid var(--line);border-radius:20px;padding:1.6rem;margin:1.6rem 0;text-align:center;font-size:1.1rem}
+  .thesis b{color:var(--violet)}
+  .end{text-align:center;background:linear-gradient(160deg,#221541,#140f22);border:1px solid var(--line);border-radius:22px;padding:2.4rem 1.4rem;margin:2.6rem 0 1rem}
+  .end h2{margin-top:0} .end p{color:var(--dim);max-width:40ch;margin:.5rem auto}
+  .btns{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-top:1.2rem}
+  .btn{text-decoration:none;border-radius:12px;padding:.85rem 1.3rem;font-weight:800}
+  .btn.p{background:var(--violet);color:#fff} .btn.g{background:var(--card);border:1px solid var(--line);color:var(--ink)}
+  footer{text-align:center;color:var(--dim);font-size:.82rem;padding:2rem 1rem 3rem}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header>
+  <div class="kick">⚓ The Plan</div>
+  <h1>This isn't a pitch.<br><span class="g">It's already running.</span></h1>
+  <p class="lead">You can argue with a promise. You can't argue with a thing that's <b>live and free right now</b>.</p>
+  <div class="receipts">
+    <div class="r g"><b>48h</b><span>idea to live</span></div>
+    <div class="r"><b>16+</b><span>free tools & pages</span></div>
+    <div class="r a"><b>18</b><span>orgs contacted</span></div>
+    <div class="r"><b>13</b><span>languages</span></div>
+    <div class="r g"><b>$0</b><span>cost, forever</span></div>
+  </div>
+  <div class="stamp"><span>✔ BUILT · GIVEN AWAY · OPEN SOURCE</span></div>
+</header>
+
+<div class="wrap">
+
+  <div class="thesis">
+    <b>The problem in one line:</b> culture isn't scarce, it's gated — by money, location, language and status. So much beauty is hidden in the chase for money and status. <b>The plan is to cut every fence.</b>
+  </div>
+
+  <h2>The plan, in four moves</h2>
+  <div class="h2sub">Proof-first. Each move is either done, running, or next — no vapour.</div>
+
+  <div class="phase done">
+    <span class="tag">DONE ✔</span>
+    <h3>1 · Build it and give it away</h3>
+    <p>A full toolkit that gives grassroots music everything big tech charges rent for — ticketing, sites, direct sales, merch, open-mic sign-up, a what's-on calendar — and route 100% to artists and venues.</p>
+    <p><b>Status:</b> live in 48 hours, free forever, open source. You can click every piece today.</p>
+  </div>
+
+  <div class="phase now">
+    <span class="tag">NOW ▶</span>
+    <h3>2 · Get it into hands, everywhere</h3>
+    <p>Reach venues, councils, music bodies, radio and artists across the country. Land the first real venue as proof. Translate it so borders don't gate it.</p>
+    <p><b>Status:</b> 18 orgs contacted, replies landing (a council sourcing a room, a state body sharing venues, a venue signed on). 13 languages live, heading to 200.</p>
+  </div>
+
+  <div class="phase next">
+    <span class="tag">NEXT →</span>
+    <h3>3 · Fund the work so it stays free</h3>
+    <p>Grants, patrons and sponsors — not to sell the tools, but to keep them free and hire people to build. A hard cap on what the founder takes; everything past it reinvests. Fully transparent.</p>
+    <p><b>Status:</b> grant conversation booked, patrons approached, rails ready. It's a movement, not one person.</p>
+  </div>
+
+  <div class="phase next">
+    <span class="tag">THE GOAL →</span>
+    <h3>4 · Hand it to everyone, in every town, every language</h3>
+    <p>Self-hosted by any venue, in 200 languages, run by a crew that grows one contributor at a time. The fences come down for good, and it no longer needs any one person to survive.</p>
+    <p><b>Status:</b> the crew road is open — anyone can join and build. Proof over education, no gatekeepers.</p>
+  </div>
+
+  <div class="end">
+    <div class="kick">You can't ignore what's already live</div>
+    <h2>So don't watch it. Join it.</h2>
+    <p>Use the tools. Sign the charter. Share it. Or build a piece of it. Every one of those is a fence coming down.</p>
+    <div class="btns">
+      <a class="btn p" href="../petition/">📜 Sign the charter</a>
+      <a class="btn g" href="../start/">🧭 Use the tools</a>
+      <a class="btn g" href="../join/">🤝 Join the quest</a>
+    </div>
+  </div>
+
+</div>
+<footer>⚓ Tech Duinn · House of Donn · we build tech so everyone can embrace culture, with respect for all · <a href="../transparency/" style="color:var(--violet)">everything's open</a></footer>
+<script>addEventListener('scroll',()=>{const h=document.documentElement,m=h.scrollHeight-h.clientHeight;document.getElementById('progress').style.width=(m>0?h.scrollTop/m*100:0)+'%';},{passive:true});</script>
+</body>
+</html>
