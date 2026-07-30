@@ -16,6 +16,15 @@ Every tool below is a single self-contained HTML file. Edit one `CONFIG` block, 
 
 Flagship, live: **openmic** — free open-mic sign-up — https://openmic.techduinn.dpdns.org
 
+
+## AI onboarding (`scripts/venue-gen`)
+Describe a venue in plain English → get a fully-configured, deploy-ready site in ~30 seconds,
+using a free local LLM gateway. Onboard a hundred venues in an afternoon.
+```bash
+scripts/venue-gen "The Retreat Hotel, Brunswick — rock pub, open mic Weds 8pm, craft beer + parmas, @retreat"
+```
+*This is the proof: AI here to build free infrastructure that pays artists — not replace them.*
+
 ## Deploy any tool in 60 seconds
 ```bash
 # 1. edit the CONFIG block at the top of the tool's index.html (name, colours, menus, prices…)

@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+"""venue-gen — AI venue onboarding for the Free Music Stack.
+Plain-English venue description  ->  a fully-configured, ready-to-deploy venue site.
+Uses the FREE local gateway (:4000). Zero cost. Built 2026-07-30.
+
+  venue-gen "The Retreat Hotel, Brunswick — rock pub, open mic Weds 8pm, craft beer + parmas, @retreat"
+  venue-gen details.txt
+  echo "..." | venue-gen
+  venue-gen -o ~/sites/retreat.html "The Retreat..."     # choose output path
+"""
+import sys, os, json, re, urllib.request
+
+TEMPLATE = os.path.expanduser("~/code/free-music-stack/venue-site/index.html")
+GW = "http://localhost:4000/v1/chat/completions"; KEY = "sk-1234"; MODEL = "cerebras-gpt-oss-120b"
+
+SCHEMA = ("{name, tagline, accent (hex colour that fits the vibe e.g. #c9a24b), "
+  "night (e.g. \"Open mic every Tuesday · 7pm\"), phone, address, hours, "
+  "socials:{instagram,facebook}, openmicSignup, "
+  "events:[{title,when,blurb}], "
+  "drinks:[{cat,items:[[name,price]]}], food:[{cat,items:[[name,price]]}], "
+  "art:[{title,artist,price,img,buy}], artBlurb}")
+
+def gateway(prompt):
+    body = json.dumps({"model": MODEL, "messages": [
+        {"role":"system","content":"You output ONLY valid minified-or-pretty JSON. No prose, no markdown fences, no commentary."},
+        {"role":"user","content":prompt}], "max_tokens":1800}).encode()
+    r = urllib.request.Request(GW, body, {"Authorization":"Bearer "+KEY,"Content-Type":"application/json"})
+    d = json.load(urllib.request.urlopen(r, timeout=120))
+    m = d["choices"][0]["message"]
+    return (m.get("content") or m.get("reasoning_content") or "").strip()
+
+def extract_json(s):
+    s = re.sub(r"^```(json)?|```$", "", s.strip(), flags=re.MULTILINE).strip()
+    a, b = s.find("{"), s.rfind("}")
+    return json.loads(s[a:b+1])
+
+def main():
+    args = sys.argv[1:]
+    out = None
+    if args and args[0] in ("-o","--out"): out = args[1]; args = args[2:]
+    if args and args[0] in ("-h","--help"): print(__doc__); return
+    desc = " ".join(args).strip()
+    if not desc:
+        if os.path.exists(" ".join(sys.argv[1:2])): desc = open(sys.argv[1]).read()
+        else: desc = sys.stdin.read().strip()
+    if not desc: sys.exit("venue-gen: no venue description given")
+
+    prompt = (f"Turn this venue description into a JSON config for a music-venue website. "
+      f"Output ONLY valid JSON with EXACTLY these keys: {SCHEMA}. "
+      f"Infer tasteful, plausible defaults for anything not stated (a fitting accent colour, a small "
+      f"drinks + food menu, an open-mic event with a friendly blurb, 2-3 placeholder local-art pieces, "
+      f"a warm artBlurb). Use openmicSignup 'https://openmic.techduinn.dpdns.org/demo' and socials '#' "
+      f"if unknown. Prices in AUD like \"$10\". Description:\n{desc}")
+    print("→ asking the free gateway to build the venue config…", file=sys.stderr)
+    try:
+        cfg = extract_json(gateway(prompt))
+    except Exception as e:
+        sys.exit(f"venue-gen: couldn't parse AI output ({e})")
+
+    name = cfg.get("name","venue")
+    slug = re.sub(r"[^a-z0-9]+","-", name.lower()).strip("-") or "venue"
+    out = out or f"./{slug}.html"
+
+    js = "const V = " + json.dumps(cfg, indent=2, ensure_ascii=False) + ";"
+    tpl = open(TEMPLATE, encoding="utf-8").read()
+    new = re.sub(r"const V = \{.*?\n\};", lambda _: js, tpl, count=1, flags=re.DOTALL)
+    if new == tpl: sys.exit("venue-gen: could not find the CONFIG block in the template")
+    os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
+    open(out,"w",encoding="utf-8").write(new)
+    print(f"✓ built {out}  ({name})")
+    print(f"  preview: open {out}")
+    print(f"  deploy free:  npx wrangler pages deploy \"{os.path.dirname(os.path.abspath(out))}\" --project-name {slug}")
+    print(f"  subdomain idea: {slug}.techduinn.dpdns.org")
+
+if __name__ == "__main__": main()
