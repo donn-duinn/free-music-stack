@@ -1,0 +1,8 @@
+name = "freemusic-tickets"
+main = "worker.js"
+compatibility_date = "2024-06-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "freemusic-tickets"
+database_id = "REPLACE_WITH_ID_FROM_CREATE"
