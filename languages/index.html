@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Read it in your language — Free Music Stack</title>
+<meta name="description" content="The manifesto, translated. AI-assisted — help us make it right in your language.">
+<meta name="theme-color" content="#7C5CFF">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%230b0a12'/%3E%3Ctext x='50' y='72' font-size='52' text-anchor='middle'%3E%F0%9F%8C%8F%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--violet:#7C5CFF;--bg:#0a0910;--card:#151222;--card2:#1a1630;--line:#2a2542;--ink:#f3f1fb;--dim:#a49cc4;--good:#3ecf8e;--amber:#f5b83d}
+  *{box-sizing:border-box}
+  body{margin:0;font:17px/1.75 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;color:var(--ink);
+       background:radial-gradient(900px 600px at 50% -12%,#241a4a,transparent),var(--bg)}
+  .wrap{max-width:640px;margin:0 auto;padding:2.4rem 1.3rem 4rem}
+  .kick{color:var(--violet);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:.72rem;text-align:center}
+  h1{font-size:2rem;letter-spacing:-.5px;text-align:center;margin:.4rem 0 .3rem}
+  .sub{color:var(--dim);text-align:center;margin:0 auto;max-width:40ch}
+  .picker{display:flex;gap:.6rem;align-items:center;justify-content:center;margin:1.4rem 0 .6rem;flex-wrap:wrap}
+  select{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:.6rem .9rem;font:inherit;font-weight:700}
+  .count{color:var(--dim);font-size:.85rem}
+  .disc{background:#1d1a0c;border:1px solid #3d360f;border-left:3px solid var(--amber);border-radius:0 12px 12px 0;
+        padding:.9rem 1.1rem;margin:1.2rem 0;font-size:.92rem;color:var(--ink)}
+  .disc b{color:var(--amber)} .disc a{color:var(--amber)}
+  .text{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:16px;
+        padding:1.4rem 1.5rem;font-size:1.1rem;line-height:1.8;white-space:pre-wrap}
+  .text.rtl{direction:rtl;text-align:right}
+  .sig{color:var(--violet);font-style:italic;margin-top:1.2rem;text-align:center}
+  .cta{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-top:1.6rem}
+  .cta a{text-decoration:none;border-radius:12px;padding:.7rem 1.1rem;font-weight:800;font-size:.95rem}
+  .cta .p{background:var(--violet);color:#fff} .cta .g{background:var(--card);border:1px solid var(--line);color:var(--ink)}
+  footer{text-align:center;color:var(--dim);font-size:.8rem;margin-top:2rem} footer a{color:var(--violet)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kick">🌍 In your language</div>
+  <h1>Read the manifesto</h1>
+  <p class="sub">Music has no borders. Neither should this.</p>
+
+  <div class="picker">
+    <label for="lang" style="color:var(--dim);font-size:.9rem">Language:</label>
+    <select id="lang"></select>
+    <span class="count" id="count"></span>
+  </div>
+
+  <div class="disc">
+    <b>Honest note:</b> I built this with AI and I don't speak most of these languages myself. The
+    translations are machine-assisted and I'm sure some are rough. <b>If yours reads wrong, please tell me
+    and I'll fix it</b> — email <a href="mailto:daniel.j.hogben@gmail.com">daniel.j.hogben@gmail.com</a> or
+    <a href="https://github.com/donn-duinn/free-music-stack/issues/2">help translate on GitHub</a>. We'd
+    rather be honest than pretend it's perfect. That's the whole ethos.
+  </div>
+
+  <div class="text" id="text" lang="en"></div>
+  <p class="sig">— the youth that has seen a lot in his days</p>
+
+  <div class="cta">
+    <a class="p" href="../why/">The full story (English)</a>
+    <a class="g" href="../project/">⚓ The whole quest</a>
+    <a class="g" href="https://github.com/donn-duinn/free-music-stack/issues/2">🌐 Add your language</a>
+  </div>
+
+  <footer>⚓ Tech Duinn · AI-assisted translation, human-corrected · <a href="../gonzo/">proof over education</a></footer>
+</div>
+
+<script>
+// Wave 1 toward a goal of 200 languages. Add more by translating and dropping them in here.
+const TR = {
+  en: { name:"English", dir:"ltr", text:`A pub with a gig on is not a luxury. It is safety infrastructure. A room with music has eyes on the street. Nightlife is the release valve that lets the working week stay sane. If we lose nightlife, we lose the youth.
+
+I got priced out of the music I love, so I built free, open-source tools to give it back, and gave them away. I am going to get things wrong. I am not doing this because I am the most skilled person for the job. I noticed a gap, and someone had to stand up. If you can build a piece I can't, come and help me make it work.
+
+This is for all walks of life. Everyone deserves a room where they can be exactly who they are. Put music where there is none, and you make a place safer, kinder, and more alive. That is worth more to me than money.` },
+  zh: { name:"中文 (Chinese)", dir:"ltr", text:`酒吧里有现场演出并不是奢侈，而是安全基础设施。拥有音乐的房间就像街道的眼睛。夜生活是让工作周保持理智的泄压阀。如果我们失去夜生活，就会失去年轻人。
+
+我因为价格高昂而买不起我热爱的音乐，于是我构建了免费、开源的工具来把音乐还给大家，并将它们免费分享。我会犯错。我并不是因为自己是最有技能的人才而做这件事。我注意到一个空缺，需要有人站出来。如果你能打造我做不到的部分，来帮助我让它运作吧。
+
+这是为所有人而设。每个人都值得拥有一个可以完全做自己的空间。把音乐带到没有音乐的地方，你就让这个地方更安全、更友善、更有活力。这对我而言比金钱更有价值。` },
+  es: { name:"Español (Spanish)", dir:"ltr", text:`Un pub con un concierto no es un lujo. Es infraestructura de seguridad. Una sala con música tiene los ojos puestos en la calle. La vida nocturna es la válvula de escape que permite que la semana laboral se mantenga cuerda. Si perdemos la vida nocturna, perdemos a la juventud.
+
+Me quedé fuera del precio de la música que amo, así que construí herramientas gratuitas y de código abierto para devolverla, y las regalé. Voy a equivocarme. No lo hago porque sea la persona más capacitada para el trabajo. Noté una brecha y alguien tuvo que dar un paso al frente. Si puedes crear una pieza que yo no puedo, ven y ayúdame a hacerla funcionar.
+
+Esto es para todas las personas. Todos merecen un lugar donde puedan ser exactamente quienes son. Pon música donde no la hay, y haces un lugar más seguro, más amable y más vivo. Eso vale más para mí que el dinero.` },
+  hi: { name:"हिन्दी (Hindi)", dir:"ltr", text:`एक पब जिसमें गिग चल रहा हो, वह कोई लक्ज़री नहीं है। यह सुरक्षा बुनियादी ढांचा है। संगीत वाले कमरे की सड़क पर नजरें रहती हैं। नाइटलाइफ़ वह रिलीज़ वाल्व है जो कामकाजी हफ़्ते को समझदारी बनाए रखता है। अगर हम नाइटलाइफ़ खो दें, तो हम युवा शक्ति खो देंगे।
+
+मैं उस संगीत की कीमत नहीं उठा सका जो मुझे पसंद है, इसलिए मैंने मुफ्त, ओपन-सोर्स टूल्स बनाए ताकि वह वापस मिल सके, और उन्हें मुफ्त में दिया। मैं गलतियाँ करूँगा। मैं यह इसलिए नहीं कर रहा हूँ क्योंकि मैं इस काम के लिए सबसे कुशल व्यक्ति हूँ। मैंने एक अंतर देखा, और किसी को खड़े होना ही था। अगर आप ऐसा कोई टुकड़ा बना सकते हैं जो मैं नहीं बना सकता, तो आएँ और इसे काम करने में मेरी मदद करें।
+
+यह सभी वर्गों के लोगों के लिए है। हर किसी को एक ऐसी जगह मिलनी चाहिए जहाँ वह बिल्कुल वही बन सकें जो वह हैं। जहाँ संगीत नहीं है, वहाँ संगीत रखें, और आप जगह को अधिक सुरक्षित, दयालु और जीवंत बनाते हैं। यह मेरे लिए पैसे से कहीं अधिक मूल्य रखता है।` },
+  ar: { name:"العربية (Arabic)", dir:"rtl", text:`حانة بها عرض موسيقي ليست ترفًا. إنها بنية تحتية للسلامة. غرفة فيها موسيقى تراقب الشارع. الحياة الليلية هي صمام الأمان الذي يجعل أسبوع العمل يبقى عاقلًا. إذا فقدنا الحياة الليلية، نفقد الشباب.
+
+طُرِدتُ من الموسيقى التي أحبها بسبب الأسعار، لذا بنيت أدوات مجانية ومفتوحة المصدر لإعادتها، وقدمتها مجانًا. سأخطئ في بعض الأمور. لست أفعل ذلك لأنني الأكثر مهارة للوظيفة. لاحظت فجوة، وكان على أحد أن ينهض. إذا كنت تستطيع بناء جزء لا أستطيع، تعال وساعدني على جعله يعمل.
+
+هذا للجميع من جميع مناحي الحياة. يحق للجميع أن تكون لديهم غرفة يمكنهم فيها أن يكونوا أنفسهم تمامًا. ضع الموسيقى حيث لا توجد، وستجعل المكان أكثر أمانًا، ولطفًا، وحياة. هذا يساوي لي أكثر من المال.` },
+};
+
+const sel=document.getElementById('lang'), textEl=document.getElementById('text');
+Object.entries(TR).forEach(([k,v])=>{const o=document.createElement('option');o.value=k;o.textContent=v.name;sel.appendChild(o);});
+document.getElementById('count').textContent = Object.keys(TR).length + " of a goal of 200";
+function show(k){const v=TR[k];textEl.textContent=v.text;textEl.setAttribute('lang',k);textEl.className='text'+(v.dir==='rtl'?' rtl':'');}
+sel.onchange=()=>show(sel.value);
+// default to browser language if we have it, else English
+const nav=(navigator.language||'en').slice(0,2);
+sel.value = TR[nav]?nav:'en'; show(sel.value);
+</script>
+</body>
+</html>
